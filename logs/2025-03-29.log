@@ -1,0 +1,105 @@
+2025-03-29 21:07:44 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-03-29 21:08:13 | INFO     | src.data.data_loader:__init__:33 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data
+2025-03-29 21:08:13 | ERROR    | src.models.stock_analyzer:__init__:31 - 初始化DeepSeek客户端失败: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-03-29 21:08:13 | INFO     | src.models.stock_analyzer:__init__:34 - 股票分析器初始化完成
+2025-03-29 21:08:13 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-03-29 21:08:16 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-03-29 21:08:16 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:00
+2025-03-29 21:08:16 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 16:00
+2025-03-29 21:08:16 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-03-29 21:08:16 | INFO     | __main__:main:174 - 启动 API 服务
+2025-03-29 21:08:16 | INFO     | src.api.api_server:start_api_server:235 - 启动API服务器: 127.0.0.1:8080
+2025-03-29 21:08:16 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-03-29 21:08:16 | INFO     | src.data.data_loader:__init__:33 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data
+2025-03-29 21:08:16 | ERROR    | src.models.stock_analyzer:__init__:31 - 初始化DeepSeek客户端失败: Client.__init__() got an unexpected keyword argument 'proxies'
+2025-03-29 21:08:16 | INFO     | src.models.stock_analyzer:__init__:34 - 股票分析器初始化完成
+2025-03-29 21:08:16 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-03-29 21:08:16 | INFO     | src.ui.app:__init__:60 - Web界面应用初始化完成
+2025-03-29 21:08:16 | INFO     | src.ui.app:launch:572 - 启动Web界面，共享模式: False
+2025-03-30 09:01:15 | INFO     | __main__:update_data:85 - 开始执行数据更新定时任务
+2025-03-30 09:01:15 | INFO     | src.data.data_loader:__init__:33 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data
+2025-03-30 09:01:15 | INFO     | __main__:update_data:92 - 更新恒生科技指数数据
+2025-03-30 09:01:15 | INFO     | src.data.data_loader:get_index_data:153 - 从API获取指数数据: HST50.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:16 | INFO     | src.data.data_loader:get_index_data:162 - 尝试使用akshare获取指数数据: HST50.HK
+2025-03-30 09:01:16 | ERROR    | src.data.data_loader:get_index_data:193 - 获取指数数据失败: HST50.HK, 错误: module 'akshare' has no attribute 'index_hist_html5'
+2025-03-30 09:01:16 | INFO     | __main__:update_data:100 - 更新股票数据: 9988.HK
+2025-03-30 09:01:16 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 9988.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:16 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 9988.HK
+2025-03-30 09:01:16 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 9988.HK, 错误: '日期'
+2025-03-30 09:01:16 | INFO     | __main__:update_data:100 - 更新股票数据: 0700.HK
+2025-03-30 09:01:16 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 0700.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:16 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 0700.HK
+2025-03-30 09:01:17 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 0700.HK, 错误: '日期'
+2025-03-30 09:01:17 | INFO     | __main__:update_data:100 - 更新股票数据: 9618.HK
+2025-03-30 09:01:17 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 9618.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:17 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 9618.HK
+2025-03-30 09:01:18 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 9618.HK, 错误: '日期'
+2025-03-30 09:01:18 | INFO     | __main__:update_data:100 - 更新股票数据: 1024.HK
+2025-03-30 09:01:18 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 1024.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:18 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 1024.HK
+2025-03-30 09:01:19 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 1024.HK, 错误: '日期'
+2025-03-30 09:01:19 | INFO     | __main__:update_data:100 - 更新股票数据: 9888.HK
+2025-03-30 09:01:19 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 9888.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:19 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 9888.HK
+2025-03-30 09:01:20 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 9888.HK, 错误: '日期'
+2025-03-30 09:01:20 | INFO     | __main__:update_data:100 - 更新股票数据: 0981.HK
+2025-03-30 09:01:20 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 0981.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:20 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 0981.HK
+2025-03-30 09:01:20 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 0981.HK, 错误: '日期'
+2025-03-30 09:01:20 | INFO     | __main__:update_data:100 - 更新股票数据: 9999.HK
+2025-03-30 09:01:20 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 9999.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:21 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 9999.HK
+2025-03-30 09:01:21 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 9999.HK, 错误: '日期'
+2025-03-30 09:01:21 | INFO     | __main__:update_data:100 - 更新股票数据: 3690.HK
+2025-03-30 09:01:21 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 3690.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:22 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 3690.HK
+2025-03-30 09:01:22 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 3690.HK, 错误: '日期'
+2025-03-30 09:01:22 | INFO     | __main__:update_data:100 - 更新股票数据: 1810.HK
+2025-03-30 09:01:22 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 1810.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:23 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 1810.HK
+2025-03-30 09:01:23 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 1810.HK, 错误: '日期'
+2025-03-30 09:01:23 | INFO     | __main__:update_data:100 - 更新股票数据: 0992.HK
+2025-03-30 09:01:23 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 0992.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:23 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 0992.HK
+2025-03-30 09:01:24 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 0992.HK, 错误: '日期'
+2025-03-30 09:01:24 | INFO     | __main__:update_data:100 - 更新股票数据: 9626.HK
+2025-03-30 09:01:24 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 9626.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:24 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 9626.HK
+2025-03-30 09:01:25 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 9626.HK, 错误: '日期'
+2025-03-30 09:01:25 | INFO     | __main__:update_data:100 - 更新股票数据: 0268.HK
+2025-03-30 09:01:25 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 0268.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:25 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 0268.HK
+2025-03-30 09:01:26 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 0268.HK, 错误: '日期'
+2025-03-30 09:01:26 | INFO     | __main__:update_data:100 - 更新股票数据: 2382.HK
+2025-03-30 09:01:26 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 2382.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:26 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 2382.HK
+2025-03-30 09:01:27 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 2382.HK, 错误: '日期'
+2025-03-30 09:01:27 | INFO     | __main__:update_data:100 - 更新股票数据: 9923.HK
+2025-03-30 09:01:27 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 9923.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:27 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 9923.HK
+2025-03-30 09:01:27 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 9923.HK, 错误: '日期'
+2025-03-30 09:01:27 | INFO     | __main__:update_data:100 - 更新股票数据: 6969.HK
+2025-03-30 09:01:27 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 6969.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:28 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 6969.HK
+2025-03-30 09:01:28 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 6969.HK, 错误: '日期'
+2025-03-30 09:01:28 | INFO     | __main__:update_data:100 - 更新股票数据: 9991.HK
+2025-03-30 09:01:28 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 9991.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:29 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 9991.HK
+2025-03-30 09:01:29 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 9991.HK, 错误: '日期'
+2025-03-30 09:01:29 | INFO     | __main__:update_data:100 - 更新股票数据: 0968.HK
+2025-03-30 09:01:29 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 0968.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:39 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 0968.HK
+2025-03-30 09:01:40 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 0968.HK, 错误: '日期'
+2025-03-30 09:01:40 | INFO     | __main__:update_data:100 - 更新股票数据: 1579.HK
+2025-03-30 09:01:40 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 1579.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:40 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 1579.HK
+2025-03-30 09:01:41 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 1579.HK, 错误: '日期'
+2025-03-30 09:01:41 | INFO     | __main__:update_data:100 - 更新股票数据: 1347.HK
+2025-03-30 09:01:41 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 1347.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:41 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 1347.HK
+2025-03-30 09:01:42 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 1347.HK, 错误: '日期'
+2025-03-30 09:01:42 | INFO     | __main__:update_data:100 - 更新股票数据: 9898.HK
+2025-03-30 09:01:42 | INFO     | src.data.data_loader:get_stock_data:61 - 从API获取股票数据: 9898.HK, 日期范围: 2023-01-01 至 2025-03-30
+2025-03-30 09:01:42 | INFO     | src.data.data_loader:get_stock_data:70 - yfinance无数据，尝试使用akshare获取: 9898.HK
+2025-03-30 09:01:42 | ERROR    | src.data.data_loader:get_stock_data:99 - 获取股票数据失败: 9898.HK, 错误: '日期'
+2025-03-30 09:01:42 | INFO     | __main__:update_data:105 - 数据更新定时任务完成
