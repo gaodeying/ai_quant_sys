@@ -8,8 +8,11 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Union, Any
 from pathlib import Path
 import json
+import time
+import requests
+from requests.exceptions import RequestException, Timeout
 
-from configs.config import DATA_DIR, TUSHARE_TOKEN
+from configs.config import CACHE_DIR, TUSHARE_TOKEN
 from src.utils.logger import logger
 
 # 初始化TuShare
@@ -23,15 +26,18 @@ else:
 class DataLoader:
     """数据加载器，负责从不同数据源获取股票数据并进行预处理"""
 
-    def __init__(self, cache_dir: Optional[Path] = None):
+    def __init__(self, cache_dir: Optional[str] = None):
         """初始化数据加载器
         
         Args:
-            cache_dir: 数据缓存目录，默认为DATA_DIR
+            cache_dir: 数据缓存目录，默认为CACHE_DIR
         """
-        self.cache_dir = cache_dir or DATA_DIR
+        self.cache_dir = Path(cache_dir or CACHE_DIR)
         os.makedirs(self.cache_dir, exist_ok=True)
-        logger.info(f"数据加载器初始化完成，缓存目录: {self.cache_dir}")
+        self.request_timeout = 30  # 请求超时时间（秒）
+        self.max_retries = 3      # 最大重试次数
+        self.retry_delay = 2      # 重试间隔（秒）
+        logger.info(f"数据加载器初始化完成，缓存目录: {self.cache_dir}，超时设置: {self.request_timeout}秒")
         
     def get_stock_data(
         self, 
@@ -56,131 +62,194 @@ class DataLoader:
         # 检查缓存
         if use_cache and cache_file.exists():
             logger.info(f"从缓存加载数据: {cache_file}")
-            df = pd.read_csv(cache_file, index_col=0, parse_dates=True)
-            return df
+            try:
+                df = pd.read_csv(cache_file, index_col=0, parse_dates=True)
+                return df
+            except Exception as e:
+                logger.warning(f"读取缓存失败，将重新获取数据: {str(e)}")
+                # 如果读取缓存失败，继续获取新数据
         
         logger.info(f"从API获取股票数据: {stock_code}, 日期范围: {start_date} 至 {end_date}")
         
-        try:
-            # 尝试使用yfinance获取数据
-            ticker = yf.Ticker(stock_code)
-            df = ticker.history(start=start_date, end=end_date)
-            
-            if df.empty:
-                # 如果yfinance没有数据，尝试使用akshare
-                logger.info(f"yfinance无数据，尝试使用akshare获取: {stock_code}")
-                # 转换港股代码格式 (如：0700.HK -> 00700)
-                if '.HK' in stock_code:
-                    ak_code = stock_code.replace('.HK', '')
-                    if len(ak_code) < 5:
-                        ak_code = ak_code.zfill(5)
-                    
-                    try:
-                        # 尝试获取港股数据
-                        df = ak.stock_hk_daily(symbol=ak_code, adjust="qfq")
-                        
-                        if df.empty:
-                            logger.warning(f"akshare返回空数据: {stock_code}")
-                            return pd.DataFrame()
-                        
-                        logger.info(f"akshare原始数据列: {df.columns.tolist()}")
-                        
-                        # 检查并处理日期列
-                        date_col = None
-                        for col in df.columns:
-                            if '日期' in col or 'date' in col.lower():
-                                date_col = col
-                                break
-                        
-                        if date_col:
-                            try:
-                                df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
-                                if df[date_col].isnull().all():
-                                    raise ValueError("日期列转换后为空")
-                                df.set_index(date_col, inplace=True)
-                            except Exception as e:
-                                logger.error(f"日期列处理失败: {str(e)}")
-                                return pd.DataFrame()
-                        else:
-                            logger.warning(f"无法找到日期列: {df.columns.tolist()}")
-                            # 尝试使用第一列作为日期列
-                            if len(df.columns) > 0:
-                                first_col = df.columns[0]
-                                logger.info(f"尝试使用 {first_col} 作为日期列")
-                                try:
-                                    df[first_col] = pd.to_datetime(df[first_col], errors='coerce')
-                                    if df[first_col].isnull().all():
-                                        raise ValueError("第一列转换为日期后为空")
-                                    df.set_index(first_col, inplace=True)
-                                except Exception as e:
-                                    logger.error(f"转换日期列失败: {str(e)}")
-                                    return pd.DataFrame()
-                            else:
-                                logger.error("数据框没有列可用作日期列")
-                                return pd.DataFrame()
-                        
-                        # 确定要重命名的列
-                        col_mapping = {}
-                        for col in df.columns:
-                            if '开' in col or 'open' in col.lower():
-                                col_mapping[col] = 'Open'
-                            elif '收' in col or 'close' in col.lower():
-                                col_mapping[col] = 'Close'
-                            elif '高' in col or 'high' in col.lower():
-                                col_mapping[col] = 'High'
-                            elif '低' in col or 'low' in col.lower():
-                                col_mapping[col] = 'Low'
-                            elif '量' in col or 'volume' in col.lower():
-                                col_mapping[col] = 'Volume'
-                        
-                        # 重命名列
-                        df = df.rename(columns=col_mapping)
-                        
-                        # 检查所需列是否存在，不存在则创建模拟数据
-                        required_cols = ["Open", "High", "Low", "Close", "Volume"]
-                        for col in required_cols:
-                            if col not in df.columns:
-                                logger.warning(f"创建模拟 {col} 列")
-                                if col == "Volume":
-                                    df[col] = 0  # 默认成交量为0
-                                elif col in ["Open", "High", "Low"]:
-                                    if "Close" in df.columns:
-                                        df[col] = df["Close"]  # 使用收盘价填充
-                                    else:
-                                        df[col] = 0  # 全部设为0
-                                else:
-                                    df[col] = 0  # 默认为0
-                        
-                        # 确保所有必要的列都存在
-                        df = df[required_cols]
-                        
-                        # 确保索引是日期类型
-                        if not isinstance(df.index, pd.DatetimeIndex):
-                            df.index = pd.to_datetime(df.index)
-                        
-                        # 确保日期范围参数是日期类型
-                        start_date_dt = pd.to_datetime(start_date)
-                        end_date_dt = pd.to_datetime(end_date)
-                        
-                        # 过滤日期范围
-                        df = df.loc[(df.index >= start_date_dt) & (df.index <= end_date_dt)]
-                        
-                    except Exception as e:
-                        logger.error(f"处理akshare数据时出错: {str(e)}")
-                        return pd.DataFrame()
-            
-            # 保存到缓存
-            if not df.empty:
-                df.to_csv(cache_file)
-                logger.info(f"数据已保存到缓存: {cache_file}")
-            else:
-                logger.warning(f"未找到股票数据: {stock_code}")
+        # 重试机制
+        for attempt in range(self.max_retries):
+            try:
+                # 尝试使用yfinance获取数据
+                logger.info(f"尝试使用yfinance获取数据 (尝试 {attempt+1}/{self.max_retries})")
+                ticker = yf.Ticker(stock_code)
                 
-            return df
+                # 设置超时参数
+                session = requests.Session()
+                session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
+                
+                # 使用会话获取数据，设置超时
+                df = ticker.history(start=start_date, end=end_date, timeout=self.request_timeout, session=session)
+                
+                if df.empty:
+                    # 如果yfinance没有数据，尝试使用akshare
+                    logger.info(f"yfinance无数据，尝试使用akshare获取: {stock_code}")
+                    # 转换港股代码格式 (如：0700.HK -> 00700)
+                    if '.HK' in stock_code:
+                        ak_code = stock_code.replace('.HK', '')
+                        if len(ak_code) < 5:
+                            ak_code = ak_code.zfill(5)
+                        
+                        try:
+                            # 尝试获取港股数据，使用try/except捕获超时异常
+                            with requests.Session() as session:
+                                session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
+                                
+                                # 设置akshare的超时
+                                df = ak.stock_hk_daily(symbol=ak_code, adjust="qfq")
+                            
+                            if df.empty:
+                                logger.warning(f"akshare返回空数据: {stock_code}")
+                                # 如果是最后一次尝试且数据为空，则返回空DataFrame
+                                if attempt == self.max_retries - 1:
+                                    return pd.DataFrame()
+                                continue
+                            
+                            logger.info(f"akshare原始数据列: {df.columns.tolist()}")
+                            
+                            # 检查并处理日期列
+                            date_col = None
+                            for col in df.columns:
+                                if '日期' in col or 'date' in col.lower():
+                                    date_col = col
+                                    break
+                            
+                            if date_col:
+                                try:
+                                    df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
+                                    if df[date_col].isnull().all():
+                                        raise ValueError("日期列转换后为空")
+                                    df.set_index(date_col, inplace=True)
+                                except Exception as e:
+                                    logger.error(f"日期列处理失败: {str(e)}")
+                                    # 如果是最后一次尝试，则返回空DataFrame
+                                    if attempt == self.max_retries - 1:
+                                        return pd.DataFrame()
+                                    continue
+                            else:
+                                logger.warning(f"无法找到日期列: {df.columns.tolist()}")
+                                # 尝试使用第一列作为日期列
+                                if len(df.columns) > 0:
+                                    first_col = df.columns[0]
+                                    logger.info(f"尝试使用 {first_col} 作为日期列")
+                                    try:
+                                        df[first_col] = pd.to_datetime(df[first_col], errors='coerce')
+                                        if df[first_col].isnull().all():
+                                            raise ValueError("第一列转换为日期后为空")
+                                        df.set_index(first_col, inplace=True)
+                                    except Exception as e:
+                                        logger.error(f"转换日期列失败: {str(e)}")
+                                        # 如果是最后一次尝试，则返回空DataFrame
+                                        if attempt == self.max_retries - 1:
+                                            return pd.DataFrame()
+                                        continue
+                                else:
+                                    logger.error("数据框没有列可用作日期列")
+                                    # 如果是最后一次尝试，则返回空DataFrame
+                                    if attempt == self.max_retries - 1:
+                                        return pd.DataFrame()
+                                    continue
+                            
+                            # 确定要重命名的列
+                            col_mapping = {}
+                            for col in df.columns:
+                                if '开' in col or 'open' in col.lower():
+                                    col_mapping[col] = 'Open'
+                                elif '收' in col or 'close' in col.lower():
+                                    col_mapping[col] = 'Close'
+                                elif '高' in col or 'high' in col.lower():
+                                    col_mapping[col] = 'High'
+                                elif '低' in col or 'low' in col.lower():
+                                    col_mapping[col] = 'Low'
+                                elif '量' in col or 'volume' in col.lower():
+                                    col_mapping[col] = 'Volume'
+                            
+                            # 重命名列
+                            df = df.rename(columns=col_mapping)
+                            
+                            # 检查所需列是否存在，不存在则创建模拟数据
+                            required_cols = ["Open", "High", "Low", "Close", "Volume"]
+                            for col in required_cols:
+                                if col not in df.columns:
+                                    logger.warning(f"创建模拟 {col} 列")
+                                    if col == "Volume":
+                                        df[col] = 0  # 默认成交量为0
+                                    elif col in ["Open", "High", "Low"]:
+                                        if "Close" in df.columns:
+                                            df[col] = df["Close"]  # 使用收盘价填充
+                                        else:
+                                            df[col] = 0  # 全部设为0
+                                    else:
+                                        df[col] = 0  # 默认为0
+                            
+                            # 确保所有必要的列都存在
+                            df = df[required_cols]
+                            
+                            # 确保索引是日期类型
+                            if not isinstance(df.index, pd.DatetimeIndex):
+                                df.index = pd.to_datetime(df.index)
+                            
+                            # 确保日期范围参数是日期类型
+                            start_date_dt = pd.to_datetime(start_date)
+                            end_date_dt = pd.to_datetime(end_date)
+                            
+                            # 过滤日期范围
+                            df = df.loc[(df.index >= start_date_dt) & (df.index <= end_date_dt)]
+                            
+                        except (RequestException, Timeout) as e:
+                            logger.error(f"akshare请求超时或连接错误: {str(e)}")
+                            # 如果是最后一次尝试，则返回空DataFrame
+                            if attempt == self.max_retries - 1:
+                                return pd.DataFrame()
+                            # 否则等待后重试
+                            time.sleep(self.retry_delay)
+                            continue
+                        except Exception as e:
+                            logger.error(f"处理akshare数据时出错: {str(e)}")
+                            # 如果是最后一次尝试，则返回空DataFrame
+                            if attempt == self.max_retries - 1:
+                                return pd.DataFrame()
+                            # 否则等待后重试
+                            time.sleep(self.retry_delay)
+                            continue
+                
+                # 数据获取成功，保存到缓存
+                if not df.empty:
+                    try:
+                        df.to_csv(cache_file)
+                        logger.info(f"数据已保存到缓存: {cache_file}")
+                    except Exception as e:
+                        logger.warning(f"保存缓存失败: {str(e)}")
+                else:
+                    logger.warning(f"未找到股票数据: {stock_code}")
+                
+                return df
+            
+            except (RequestException, Timeout) as e:
+                # 如果是网络超时或连接错误，记录后重试
+                logger.error(f"数据请求超时或连接错误 (尝试 {attempt+1}/{self.max_retries}): {str(e)}")
+                if attempt < self.max_retries - 1:
+                    logger.info(f"等待 {self.retry_delay} 秒后重试...")
+                    time.sleep(self.retry_delay)
+                else:
+                    logger.error(f"达到最大重试次数，获取数据失败: {stock_code}")
+                    return pd.DataFrame()
+            except Exception as e:
+                # 其他错误
+                logger.error(f"获取股票数据失败: {stock_code}, 错误: {str(e)}")
+                if attempt < self.max_retries - 1:
+                    logger.info(f"等待 {self.retry_delay} 秒后重试...")
+                    time.sleep(self.retry_delay)
+                else:
+                    logger.error(f"达到最大重试次数，获取数据失败: {stock_code}")
+                    return pd.DataFrame()
         
-        except Exception as e:
-            logger.error(f"获取股票数据失败: {stock_code}, 错误: {str(e)}")
-            return pd.DataFrame()
+        # 所有尝试都失败
+        return pd.DataFrame()
     
     def get_multiple_stocks_data(
         self,
@@ -230,158 +299,238 @@ class DataLoader:
         
         if use_cache and cache_file.exists():
             logger.info(f"从缓存加载指数数据: {cache_file}")
-            df = pd.read_csv(cache_file, index_col=0, parse_dates=True)
-            return df
+            try:
+                df = pd.read_csv(cache_file, index_col=0, parse_dates=True)
+                return df
+            except Exception as e:
+                logger.warning(f"读取指数缓存失败，将重新获取数据: {str(e)}")
+                # 如果读取缓存失败，继续获取新数据
         
         logger.info(f"从API获取指数数据: {index_code}, 日期范围: {start_date} 至 {end_date}")
         
-        try:
-            # 尝试使用yfinance获取数据
-            ticker = yf.Ticker(index_code)
-            df = ticker.history(start=start_date, end=end_date)
-            
-            if df.empty and '.HK' in index_code:
-                # 尝试使用akshare获取恒生指数数据
-                logger.info(f"尝试使用akshare获取指数数据: {index_code}")
+        # 重试机制
+        for attempt in range(self.max_retries):
+            try:
+                # 尝试使用yfinance获取数据
+                logger.info(f"尝试使用yfinance获取指数数据 (尝试 {attempt+1}/{self.max_retries})")
+                ticker = yf.Ticker(index_code)
                 
-                # 将指数代码映射到akshare的代码格式
-                ak_index_code = None
-                mock_data = None
+                # 设置超时参数
+                session = requests.Session()
+                session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
                 
-                if index_code == "HSI.HK":
-                    # 恒生指数 - 使用上证指数作为替代测试
-                    ak_index_code = "000001"
-                elif index_code == "HSTECH.HK" or index_code == "HST50.HK":
-                    # 恒生科技指数 - 使用科创50指数作为替代测试
-                    ak_index_code = "000688"
+                # 使用会话获取数据，设置超时
+                df = ticker.history(start=start_date, end=end_date, timeout=self.request_timeout, session=session)
+                
+                if df.empty and '.HK' in index_code:
+                    # 尝试使用akshare获取恒生指数数据
+                    logger.info(f"尝试使用akshare获取指数数据: {index_code}")
                     
-                    # 如果无法获取，则创建模拟数据
-                    mock_data = self._create_mock_index_data(index_code, start_date, end_date)
-                
-                # 尝试使用akshare获取数据
-                if ak_index_code:
-                    try:
-                        # 使用正确的akshare方法获取指数数据
-                        df = ak.stock_zh_index_hist_csindex(symbol=ak_index_code)
-                        logger.info(f"成功获取指数数据，使用stock_zh_index_hist_csindex方法")
-                    except Exception as e:
-                        logger.error(f"使用stock_zh_index_hist_csindex获取指数数据失败: {str(e)}")
+                    # 将指数代码映射到akshare的代码格式
+                    ak_index_code = None
+                    mock_data = None
+                    
+                    if index_code == "HSI.HK":
+                        # 恒生指数 - 使用上证指数作为替代测试
+                        ak_index_code = "000001"
+                    elif index_code == "HSTECH.HK" or index_code == "HST50.HK":
+                        # 恒生科技指数 - 使用科创50指数作为替代测试
+                        ak_index_code = "000688"
                         
-                        # 尝试备用方法
+                        # 如果无法获取，则创建模拟数据
+                        mock_data = self._create_mock_index_data(index_code, start_date, end_date)
+                    
+                    # 尝试使用akshare获取数据
+                    if ak_index_code:
                         try:
-                            df = ak.stock_zh_index_daily(symbol=ak_index_code)
-                            logger.info(f"成功获取指数数据，使用stock_zh_index_daily方法")
-                        except Exception as e:
-                            logger.error(f"使用stock_zh_index_daily获取指数数据失败: {str(e)}")
-                            
-                            # 最后尝试
-                            try:
-                                df = ak.index_zh_a_hist(symbol=ak_index_code, period="daily", start_date=start_date, end_date=end_date)
-                                logger.info(f"成功获取指数数据，使用index_zh_a_hist方法")
-                            except Exception as e:
-                                logger.error(f"使用index_zh_a_hist获取指数数据失败: {str(e)}")
-                                df = pd.DataFrame()
-                else:
-                    logger.warning(f"无法将指数代码 {index_code} 映射到akshare支持的格式")
-                    df = pd.DataFrame()
-                
-                # 如果无法获取真实数据，使用模拟数据
-                if df.empty and mock_data is not None:
-                    logger.warning(f"使用模拟指数数据: {index_code}")
-                    df = mock_data
-                    
-                # 如果成功获取到数据，进行标准化处理
-                if not df.empty:
-                    try:
-                        logger.info(f"akshare原始指数数据列: {df.columns.tolist()}")
-                        
-                        # 检查并处理日期列
-                        date_col = None
-                        for col in df.columns:
-                            if '日期' in col or 'date' in col.lower():
-                                date_col = col
-                                break
-                        
-                        if date_col:
-                            df[date_col] = pd.to_datetime(df[date_col])
-                            df.set_index(date_col, inplace=True)
-                        else:
-                            logger.warning(f"无法找到指数日期列: {df.columns.tolist()}")
-                            # 尝试使用第一列作为日期列
-                            if len(df.columns) > 0:
-                                first_col = df.columns[0]
-                                logger.info(f"尝试使用 {first_col} 作为日期列")
-                                try:
-                                    df[first_col] = pd.to_datetime(df[first_col])
-                                    df.set_index(first_col, inplace=True)
-                                except Exception as e:
-                                    logger.error(f"转换指数日期列失败: {str(e)}")
+                            # 使用正确的akshare方法获取指数数据，添加超时处理
+                            with requests.Session() as session:
+                                session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
+                                df = ak.stock_zh_index_hist_csindex(symbol=ak_index_code)
+                            logger.info(f"成功获取指数数据，使用stock_zh_index_hist_csindex方法")
+                        except (RequestException, Timeout) as e:
+                            logger.error(f"请求超时或连接错误: {str(e)}")
+                            if attempt == self.max_retries - 1:
+                                # 如果是最后一次尝试，尝试使用模拟数据
+                                if mock_data is not None:
+                                    df = mock_data
+                                else:
                                     return pd.DataFrame()
                             else:
-                                return pd.DataFrame()
-                        
-                        # 确定要重命名的列
-                        col_mapping = {}
-                        for col in df.columns:
-                            if '开' in col or 'open' in col.lower():
-                                col_mapping[col] = 'Open'
-                            elif '收' in col or 'close' in col.lower():
-                                col_mapping[col] = 'Close'
-                            elif '高' in col or 'high' in col.lower():
-                                col_mapping[col] = 'High'
-                            elif '低' in col or 'low' in col.lower():
-                                col_mapping[col] = 'Low'
-                            elif '量' in col or 'volume' in col.lower():
-                                col_mapping[col] = 'Volume'
-                        
-                        # 重命名列
-                        df = df.rename(columns=col_mapping)
-                        
-                        # 检查所需列是否存在，不存在则创建模拟数据
-                        required_cols = ["Open", "High", "Low", "Close", "Volume"]
-                        for col in required_cols:
-                            if col not in df.columns:
-                                logger.warning(f"创建模拟指数 {col} 列")
-                                if col == "Volume":
-                                    df[col] = 0  # 默认成交量为0
-                                elif col in ["Open", "High", "Low"]:
-                                    if "Close" in df.columns:
-                                        df[col] = df["Close"]  # 使用收盘价填充
+                                time.sleep(self.retry_delay)
+                                continue
+                        except Exception as e:
+                            logger.error(f"使用stock_zh_index_hist_csindex获取指数数据失败: {str(e)}")
+                            
+                            # 尝试备用方法
+                            try:
+                                with requests.Session() as session:
+                                    session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
+                                    df = ak.stock_zh_index_daily(symbol=ak_index_code)
+                                logger.info(f"成功获取指数数据，使用stock_zh_index_daily方法")
+                            except (RequestException, Timeout) as e:
+                                logger.error(f"请求超时或连接错误: {str(e)}")
+                                if attempt == self.max_retries - 1:
+                                    # 如果是最后一次尝试，尝试使用模拟数据
+                                    if mock_data is not None:
+                                        df = mock_data
                                     else:
-                                        df[col] = 0  # 全部设为0
+                                        return pd.DataFrame()
                                 else:
-                                    df[col] = 0  # 默认为0
+                                    time.sleep(self.retry_delay)
+                                continue
+                            except Exception as e:
+                                logger.error(f"使用stock_zh_index_daily获取指数数据失败: {str(e)}")
+                                
+                                # 最后尝试
+                                try:
+                                    with requests.Session() as session:
+                                        session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
+                                        df = ak.index_zh_a_hist(symbol=ak_index_code, period="daily", 
+                                                           start_date=start_date, end_date=end_date)
+                                    logger.info(f"成功获取指数数据，使用index_zh_a_hist方法")
+                                except (RequestException, Timeout) as e:
+                                    logger.error(f"请求超时或连接错误: {str(e)}")
+                                    if attempt == self.max_retries - 1:
+                                        # 如果是最后一次尝试，尝试使用模拟数据
+                                        if mock_data is not None:
+                                            df = mock_data
+                                        else:
+                                            return pd.DataFrame()
+                                    else:
+                                        time.sleep(self.retry_delay)
+                                    continue
+                                except Exception as e:
+                                    logger.error(f"使用index_zh_a_hist获取指数数据失败: {str(e)}")
+                                    df = pd.DataFrame()
+                    else:
+                        logger.warning(f"无法将指数代码 {index_code} 映射到akshare支持的格式")
+                        df = pd.DataFrame()
+                    
+                    # 如果无法获取真实数据，使用模拟数据
+                    if df.empty and mock_data is not None:
+                        logger.warning(f"使用模拟指数数据: {index_code}")
+                        df = mock_data
                         
-                        # 确保所有必要的列都存在
-                        df = df[required_cols]
-                        
-                        # 确保索引是日期类型
-                        if not isinstance(df.index, pd.DatetimeIndex):
-                            df.index = pd.to_datetime(df.index)
-                        
-                        # 确保日期范围参数是日期类型
-                        start_date_dt = pd.to_datetime(start_date)
-                        end_date_dt = pd.to_datetime(end_date)
-                        
-                        # 过滤日期范围
-                        df = df.loc[(df.index >= start_date_dt) & (df.index <= end_date_dt)]
-                        
-                    except Exception as e:
-                        logger.error(f"处理指数数据时出错: {str(e)}")
-                        return pd.DataFrame()
-            
-            # 保存到缓存
-            if not df.empty:
-                df.to_csv(cache_file)
-                logger.info(f"指数数据已保存到缓存: {cache_file}")
-            else:
-                logger.warning(f"未找到指数数据: {index_code}")
+                    # 如果成功获取到数据，进行标准化处理
+                    if not df.empty:
+                        try:
+                            logger.info(f"akshare原始指数数据列: {df.columns.tolist()}")
+                            
+                            # 检查并处理日期列
+                            date_col = None
+                            for col in df.columns:
+                                if '日期' in col or 'date' in col.lower():
+                                    date_col = col
+                                    break
+                            
+                            if date_col:
+                                df[date_col] = pd.to_datetime(df[date_col])
+                                df.set_index(date_col, inplace=True)
+                            else:
+                                logger.warning(f"无法找到指数日期列: {df.columns.tolist()}")
+                                # 尝试使用第一列作为日期列
+                                if len(df.columns) > 0:
+                                    first_col = df.columns[0]
+                                    logger.info(f"尝试使用 {first_col} 作为日期列")
+                                    try:
+                                        df[first_col] = pd.to_datetime(df[first_col])
+                                        df.set_index(first_col, inplace=True)
+                                    except Exception as e:
+                                        logger.error(f"转换指数日期列失败: {str(e)}")
+                                        if attempt == self.max_retries - 1:
+                                            return pd.DataFrame()
+                                        continue
+                                else:
+                                    if attempt == self.max_retries - 1:
+                                        return pd.DataFrame()
+                                    continue
+                            
+                            # 确定要重命名的列
+                            col_mapping = {}
+                            for col in df.columns:
+                                if '开' in col or 'open' in col.lower():
+                                    col_mapping[col] = 'Open'
+                                elif '收' in col or 'close' in col.lower():
+                                    col_mapping[col] = 'Close'
+                                elif '高' in col or 'high' in col.lower():
+                                    col_mapping[col] = 'High'
+                                elif '低' in col or 'low' in col.lower():
+                                    col_mapping[col] = 'Low'
+                                elif '量' in col or 'volume' in col.lower():
+                                    col_mapping[col] = 'Volume'
+                            
+                            # 重命名列
+                            df = df.rename(columns=col_mapping)
+                            
+                            # 检查所需列是否存在，不存在则创建模拟数据
+                            required_cols = ["Open", "High", "Low", "Close", "Volume"]
+                            for col in required_cols:
+                                if col not in df.columns:
+                                    logger.warning(f"创建模拟指数 {col} 列")
+                                    if col == "Volume":
+                                        df[col] = 0  # 默认成交量为0
+                                    elif col in ["Open", "High", "Low"]:
+                                        if "Close" in df.columns:
+                                            df[col] = df["Close"]  # 使用收盘价填充
+                                        else:
+                                            df[col] = 0  # 全部设为0
+                                    else:
+                                        df[col] = 0  # 默认为0
+                            
+                            # 确保所有必要的列都存在
+                            df = df[required_cols]
+                            
+                            # 确保索引是日期类型
+                            if not isinstance(df.index, pd.DatetimeIndex):
+                                df.index = pd.to_datetime(df.index)
+                            
+                            # 确保日期范围参数是日期类型
+                            start_date_dt = pd.to_datetime(start_date)
+                            end_date_dt = pd.to_datetime(end_date)
+                            
+                            # 过滤日期范围
+                            df = df.loc[(df.index >= start_date_dt) & (df.index <= end_date_dt)]
+                            
+                        except Exception as e:
+                            logger.error(f"处理指数数据时出错: {str(e)}")
+                            if attempt == self.max_retries - 1:
+                                return pd.DataFrame()
+                            continue
                 
-            return df
+                # 数据获取成功，保存到缓存
+                if not df.empty:
+                    try:
+                        df.to_csv(cache_file)
+                        logger.info(f"指数数据已保存到缓存: {cache_file}")
+                    except Exception as e:
+                        logger.warning(f"保存指数缓存失败: {str(e)}")
+                else:
+                    logger.warning(f"未找到指数数据: {index_code}")
+                    
+                return df
+                
+            except (RequestException, Timeout) as e:
+                # 如果是网络超时或连接错误，记录后重试
+                logger.error(f"指数数据请求超时或连接错误 (尝试 {attempt+1}/{self.max_retries}): {str(e)}")
+                if attempt < self.max_retries - 1:
+                    logger.info(f"等待 {self.retry_delay} 秒后重试...")
+                    time.sleep(self.retry_delay)
+                else:
+                    logger.error(f"达到最大重试次数，获取指数数据失败: {index_code}")
+                    return pd.DataFrame()
+            except Exception as e:
+                # 其他错误
+                logger.error(f"获取指数数据失败: {index_code}, 错误: {str(e)}")
+                if attempt < self.max_retries - 1:
+                    logger.info(f"等待 {self.retry_delay} 秒后重试...")
+                    time.sleep(self.retry_delay)
+                else:
+                    logger.error(f"达到最大重试次数，获取指数数据失败: {index_code}")
+                    return pd.DataFrame()
         
-        except Exception as e:
-            logger.error(f"获取指数数据失败: {index_code}, 错误: {str(e)}")
-            return pd.DataFrame()
+        # 所有尝试都失败
+        return pd.DataFrame()
 
     def get_stock_fundamentals(self, stock_code: str, use_cache: bool = True) -> Dict[str, Any]:
         """获取股票基本面数据
@@ -418,57 +567,129 @@ class DataLoader:
             "_source": "api"
         }
         
-        try:
-            # 使用yfinance获取基本数据
+        # 重试机制
+        for attempt in range(self.max_retries):
             try:
-                ticker = yf.Ticker(stock_code)
-                info = ticker.info
-                
-                # 提取相关信息
-                result["pe_ratio"] = info.get("trailingPE")
-                result["pb_ratio"] = info.get("priceToBook")
-                result["dividend_yield"] = info.get("dividendYield")
-                result["market_cap"] = info.get("marketCap")
-                
-                # 检查是否有任何有效数据
-                has_valid_data = any(v is not None for k, v in result.items() if k != "_source")
-                if not has_valid_data:
-                    raise ValueError("没有获取到有效基本面数据")
-                    
-            except Exception as e:
-                logger.warning(f"Yahoo Finance API调用失败: {str(e)}，使用模拟数据")
-                # 使用模拟数据填充
-                result = self._create_mock_fundamentals(stock_code)
-            
-            # 获取最近的财务报表数据
-            if pro is not None and '.HK' in stock_code:
+                # 使用yfinance获取基本数据
+                logger.info(f"尝试使用yfinance获取基本面数据 (尝试 {attempt+1}/{self.max_retries})")
                 try:
-                    # 使用Tushare获取财报数据（如果有token）
-                    # 转换港股代码格式
-                    ts_code = stock_code.replace('.HK', '.HK')
+                    # 设置超时参数
+                    session = requests.Session()
+                    session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
                     
-                    # 尝试获取最近四个季度的财报
-                    income = pro.income(ts_code=ts_code, period='20230930')
-                    if not income.empty:
-                        # 处理收入和利润数据
-                        logger.info(f"成功获取 {stock_code} 的财报数据")
+                    ticker = yf.Ticker(stock_code)
+                    info = ticker.info
+                    
+                    # 提取相关信息
+                    result["pe_ratio"] = info.get("trailingPE")
+                    result["pb_ratio"] = info.get("priceToBook")
+                    result["dividend_yield"] = info.get("dividendYield")
+                    result["market_cap"] = info.get("marketCap")
+                    
+                    # 尝试获取增长率数据
+                    if "earnings" in info and isinstance(info["earnings"], dict) and len(info["earnings"]) > 1:
+                        years = sorted(info["earnings"].keys())
+                        if len(years) >= 2:
+                            curr_year = years[-1]
+                            prev_year = years[-2]
+                            
+                            if info["earnings"][prev_year] > 0:
+                                result["profit_growth"] = (info["earnings"][curr_year] - info["earnings"][prev_year]) / info["earnings"][prev_year]
+                    
+                    logger.info(f"成功获取基本面数据: {stock_code}")
+                    
+                except (RequestException, Timeout) as e:
+                    logger.error(f"yfinance基本面数据请求超时或连接错误: {str(e)}")
+                    if attempt < self.max_retries - 1:
+                        logger.info(f"等待 {self.retry_delay} 秒后重试...")
+                        time.sleep(self.retry_delay)
+                        continue
                 except Exception as e:
-                    logger.error(f"获取财报数据失败: {stock_code}, 错误: {str(e)}")
-            
-            # 保存到缓存
-            try:
-                with open(cache_file, 'w', encoding='utf-8') as f:
-                    json.dump(result, f, ensure_ascii=False, indent=2)
+                    logger.error(f"yfinance获取基本面数据失败: {str(e)}")
+                
+                # 检查是否获取了主要数据
+                has_data = result["pe_ratio"] is not None or result["pb_ratio"] is not None
+                
+                if not has_data and stock_code.endswith('.HK') and TUSHARE_TOKEN:
+                    # 尝试使用tushare获取港股基本面数据
+                    try:
+                        # 转换港股代码格式 (如：0700.HK -> 00700)
+                        ts_code = stock_code.replace('.HK', '')
+                        if len(ts_code) < 5:
+                            ts_code = ts_code.zfill(5)
+                        
+                        # 使用tushare获取港股基本面数据
+                        with requests.Session() as session:
+                            session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
+                            df = pro.hk_basic(ts_code=ts_code, fields='pe,pb,dividend_yield,total_mv')
+                        
+                        if not df.empty:
+                            result["pe_ratio"] = df.iloc[0]['pe'] if 'pe' in df.columns else None
+                            result["pb_ratio"] = df.iloc[0]['pb'] if 'pb' in df.columns else None
+                            result["dividend_yield"] = df.iloc[0]['dividend_yield'] if 'dividend_yield' in df.columns else None
+                            result["market_cap"] = df.iloc[0]['total_mv'] if 'total_mv' in df.columns else None
+                            
+                            logger.info(f"成功从tushare获取港股基本面数据: {stock_code}")
+                            has_data = True
+                    except (RequestException, Timeout) as e:
+                        logger.error(f"tushare基本面数据请求超时或连接错误: {str(e)}")
+                        if attempt < self.max_retries - 1:
+                            logger.info(f"等待 {self.retry_delay} 秒后重试...")
+                            time.sleep(self.retry_delay)
+                            continue
+                    except Exception as e:
+                        logger.error(f"tushare获取港股基本面数据失败: {str(e)}")
+                
+                # 如果所有API尝试都失败，但有必要的话创建模拟数据（最后一次尝试）
+                if not has_data and attempt == self.max_retries - 1:
+                    logger.warning(f"无法获取真实基本面数据，使用模拟数据: {stock_code}")
+                    mock_data = self._create_mock_fundamentals(stock_code)
+                    result.update(mock_data)
+                    result["_source"] = "mock"
+                
+                # 保存到缓存
+                try:
+                    with open(cache_file, 'w', encoding='utf-8') as f:
+                        json.dump(result, f, ensure_ascii=False, indent=2)
                     logger.info(f"基本面数据已保存到缓存: {cache_file}")
+                except Exception as e:
+                    logger.warning(f"保存基本面数据缓存失败: {str(e)}")
+                
+                return result
+                
+            except (RequestException, Timeout) as e:
+                # 如果是网络超时或连接错误，记录后重试
+                logger.error(f"基本面数据请求超时或连接错误 (尝试 {attempt+1}/{self.max_retries}): {str(e)}")
+                if attempt < self.max_retries - 1:
+                    logger.info(f"等待 {self.retry_delay} 秒后重试...")
+                    time.sleep(self.retry_delay)
+                else:
+                    # 最后一次尝试后，返回模拟数据
+                    logger.warning(f"达到最大重试次数，使用模拟基本面数据: {stock_code}")
+                    mock_data = self._create_mock_fundamentals(stock_code)
+                    result.update(mock_data)
+                    result["_source"] = "mock"
+                    return result
             except Exception as e:
-                logger.error(f"保存基本面数据到缓存失败: {str(e)}")
-            
-            return result
-            
-        except Exception as e:
-            logger.error(f"获取基本面数据失败: {stock_code}, 错误: {str(e)}")
-            # 返回模拟数据
-            return self._create_mock_fundamentals(stock_code)
+                # 其他错误
+                logger.error(f"获取基本面数据失败: {stock_code}, 错误: {str(e)}")
+                if attempt < self.max_retries - 1:
+                    logger.info(f"等待 {self.retry_delay} 秒后重试...")
+                    time.sleep(self.retry_delay)
+                else:
+                    # 最后一次尝试后，返回模拟数据
+                    logger.warning(f"达到最大重试次数，使用模拟基本面数据: {stock_code}")
+                    mock_data = self._create_mock_fundamentals(stock_code)
+                    result.update(mock_data)
+                    result["_source"] = "mock"
+                    return result
+        
+        # 如果程序执行到这里，说明所有尝试都失败了，返回模拟数据
+        logger.warning(f"所有尝试失败，使用模拟基本面数据: {stock_code}")
+        mock_data = self._create_mock_fundamentals(stock_code)
+        result.update(mock_data)
+        result["_source"] = "mock"
+        return result
     
     def _create_mock_fundamentals(self, stock_code: str) -> Dict[str, Any]:
         """创建模拟基本面数据

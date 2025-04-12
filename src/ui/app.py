@@ -9,9 +9,11 @@ from typing import Dict, List, Optional, Union, Any, Tuple
 import gradio as gr
 from pathlib import Path
 
-# Set Matplotlib to use a font that supports Chinese characters
-matplotlib.rcParams['font.sans-serif'] = ['SimHei']  # Use SimHei for Chinese support
-matplotlib.rcParams['axes.unicode_minus'] = False  # Ensure minus signs are displayed correctly
+# 设置Matplotlib字体配置，支持中文显示
+matplotlib.rcParams['font.sans-serif'] = ['Arial Unicode MS', 'SimHei', 'DejaVu Sans', 'Bitstream Vera Sans']
+matplotlib.rcParams['font.family'] = 'sans-serif'
+matplotlib.rcParams['axes.unicode_minus'] = False  # 确保负号正确显示
+matplotlib.rcParams['figure.autolayout'] = True  # 自动调整布局，避免标签被截断
 
 # 获取项目根目录
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -204,11 +206,15 @@ class GradioApp:
         Returns:
             分析结果文本, 技术指标DataFrame, 股价图表
         """
-        logger.info(f"UI请求: 分析股票 {stock_code}, 天数: {days}")
-        
         try:
+            logger.info(f"UI请求: 分析股票 {stock_code}, 天数: {days}")
+            
+            # 从选择的文本中提取纯股票代码（从"9618.HK (京东集团-SW)"提取"9618.HK"）
+            pure_stock_code = stock_code.split(" ")[0] if " " in stock_code else stock_code
+            logger.info(f"提取纯股票代码: {pure_stock_code}")
+            
             # 获取分析结果
-            analysis = self.stock_analyzer.analyze_stock(stock_code, days)
+            analysis = self.stock_analyzer.analyze_stock(pure_stock_code, days)
             
             if "error" in analysis:
                 return f"分析错误: {analysis['error']}", pd.DataFrame(), plt.Figure()
@@ -237,7 +243,7 @@ class GradioApp:
                 df = pd.DataFrame()
             
             # 生成股价图表
-            figure = self._plot_stock_data(stock_code, days)
+            figure = self._plot_stock_data(pure_stock_code, days)
             
             return summary, df, figure
         
@@ -247,7 +253,7 @@ class GradioApp:
     
     def run_backtest(self, stock_code: str, strategy_name: str, 
                     start_date: str, end_date: str) -> Tuple[Dict[str, Any], plt.Figure, plt.Figure]:
-        """运行回测
+        """运行策略回测
         
         Args:
             stock_code: 股票代码
@@ -256,26 +262,23 @@ class GradioApp:
             end_date: 结束日期
             
         Returns:
-            回测结果, 净值曲线图, 回撤曲线图
+            回测结果字典、净值曲线图和回撤曲线图
         """
-        logger.info(f"UI请求: 回测 {stock_code}, 策略: {strategy_name}, 日期: {start_date} 至 {end_date}")
-        
         try:
+            logger.info(f"UI请求: 回测 {stock_code}, 策略: {strategy_name}, 日期范围: {start_date} 至 {end_date}")
+            
+            # 从选择的文本中提取纯股票代码
+            pure_stock_code = stock_code.split(" ")[0] if " " in stock_code else stock_code
+            logger.info(f"提取纯股票代码: {pure_stock_code}")
+            
             # 创建策略实例
-            strategy_params = {}
-            if strategy_name == "bollinger":
-                strategy_params = {"period": 20, "num_std": 2.0}
-            elif strategy_name == "rsi":
-                strategy_params = {"period": 14, "overbought": 70, "oversold": 30}
-            elif strategy_name == "macd":
-                strategy_params = {"fast": 12, "slow": 26, "signal": 9}
-                
+            strategy_params = self._get_strategy_params(strategy_name)
             strategy = StrategyFactory.create_strategy(strategy_name, **strategy_params)
             
             # 运行回测
             result = self.backtester.run_backtest(
                 strategy, 
-                stock_code, 
+                pure_stock_code, 
                 start_date, 
                 end_date
             )
@@ -317,7 +320,7 @@ class GradioApp:
             return {"error": str(e)}, plt.Figure(), plt.Figure()
     
     def compare_strategies(self, stock_code: str, start_date: str, end_date: str) -> Tuple[str, plt.Figure, plt.Figure]:
-        """比较不同策略
+        """比较多个策略在一只股票上的表现
         
         Args:
             stock_code: 股票代码
@@ -325,12 +328,16 @@ class GradioApp:
             end_date: 结束日期
             
         Returns:
-            比较结果文本, 净值曲线图, 回撤曲线图
+            比较结果文本、净值曲线图和回撤曲线图
         """
-        logger.info(f"UI请求: 比较策略, 股票: {stock_code}, 日期: {start_date} 至 {end_date}")
-        
         try:
-            # 创建不同策略实例
+            logger.info(f"UI请求: 策略比较, 股票: {stock_code}, 日期范围: {start_date} 至 {end_date}")
+            
+            # 从选择的文本中提取纯股票代码
+            pure_stock_code = stock_code.split(" ")[0] if " " in stock_code else stock_code
+            logger.info(f"提取纯股票代码: {pure_stock_code}")
+            
+            # 创建所有策略实例
             strategies = [
                 StrategyFactory.create_strategy("bollinger"),
                 StrategyFactory.create_strategy("rsi"),
@@ -344,7 +351,7 @@ class GradioApp:
                 try:
                     result = self.backtester.run_backtest(
                         strategy, 
-                        stock_code, 
+                        pure_stock_code, 
                         start_date, 
                         end_date
                     )
@@ -456,109 +463,130 @@ class GradioApp:
             return pd.DataFrame({"error": [str(e)]})
     
     def _plot_stock_data(self, stock_code: str, days: int) -> plt.Figure:
-        """绘制股票数据图表"""
+        """绘制股票数据图表
+        
+        Args:
+            stock_code: 股票代码
+            days: 天数
+            
+        Returns:
+            股价图表
+        """
+        plt.figure(figsize=(12, 8))
+        
         try:
+            # 获取股票数据
             end_date = datetime.now().strftime('%Y-%m-%d')
             start_date = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
-
-            # 获取股票数据
             stock_data = self.data_loader.get_stock_data(stock_code, start_date, end_date)
+            
             if stock_data.empty:
-                # 创建空图表
-                fig = plt.figure(figsize=(10, 6))
-                plt.title(f"无法获取股票数据: {stock_code}", fontproperties='SimHei')
-                return fig
-
-            # 计算技术指标
-            data_with_indicators = self.data_loader.calculate_technical_indicators(stock_data)
-
-            # 创建图表
-            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), gridspec_kw={'height_ratios': [3, 1]})
-
-            # 绘制K线图和均线
-            ax1.set_title(f"{stock_code} 股价走势图", fontproperties='SimHei')
-
-            # 绘制收盘价
-            ax1.plot(data_with_indicators.index, data_with_indicators['Close'], label='收盘价')
-
-            # 绘制移动平均线
-            if 'MA5' in data_with_indicators.columns:
-                ax1.plot(data_with_indicators.index, data_with_indicators['MA5'], label='MA5')
-            if 'MA20' in data_with_indicators.columns:
-                ax1.plot(data_with_indicators.index, data_with_indicators['MA20'], label='MA20')
-            if 'MA60' in data_with_indicators.columns:
-                ax1.plot(data_with_indicators.index, data_with_indicators['MA60'], label='MA60')
-
-            # 绘制布林带
-            if all(col in data_with_indicators.columns for col in ['Upper_Band', 'Lower_Band']):
-                ax1.plot(data_with_indicators.index, data_with_indicators['Upper_Band'], 'r--', label='布林上轨')
-                ax1.plot(data_with_indicators.index, data_with_indicators['Lower_Band'], 'g--', label='布林下轨')
-
-            ax1.set_ylabel('价格', fontproperties='SimHei')
-            ax1.legend(loc='best', prop={'family': 'SimHei'})
+                plt.title(f"无法获取股票数据: {stock_code}", fontsize=14, pad=20)
+                return plt.gcf()
+            
+            # 绘制股价
+            ax1 = plt.subplot(2, 1, 1)
+            ax1.plot(stock_data.index, stock_data['close'], label='收盘价', linewidth=2)
+            ax1.set_title(f"{stock_code} 股价走势 ({start_date} 至 {end_date})", fontsize=16, pad=20)
+            ax1.set_ylabel('价格', fontsize=12)
             ax1.grid(True)
-
-            # 绘制交易量
-            ax2.bar(data_with_indicators.index, data_with_indicators['Volume'])
-            ax2.set_ylabel('成交量', fontproperties='SimHei')
+            ax1.legend(loc='best', fontsize=10)
+            
+            # 绘制成交量
+            ax2 = plt.subplot(2, 1, 2, sharex=ax1)
+            ax2.bar(stock_data.index, stock_data['volume'], label='成交量', alpha=0.7)
+            ax2.set_ylabel('成交量', fontsize=12)
+            ax2.set_xlabel('日期', fontsize=12)
             ax2.grid(True)
-
+            ax2.legend(loc='best', fontsize=10)
+            
             plt.tight_layout()
-            return fig
-
+            return plt.gcf()
         except Exception as e:
-            logger.error(f"绘制股票图表失败: {str(e)}")
-            # 创建错误信息图表
-            fig = plt.figure(figsize=(10, 6))
-            plt.title(f"绘制图表出错: {str(e)}", fontproperties='SimHei')
-            return fig
+            logger.error(f"绘制股票图表时出错: {str(e)}")
+            plt.title(f"生成图表时出错: {str(e)}", fontsize=14, pad=20)
+            return plt.gcf()
     
     def _plot_equity_curve(self, backtest_result: Dict[str, Any]) -> plt.Figure:
         """绘制净值曲线
         
         Args:
-            backtest_result: 回测结果字典
+            backtest_result: 回测结果
             
         Returns:
-            matplotlib图表
+            净值曲线图
         """
-        fig = plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(12, 8))
         
-        if "equity_curve" in backtest_result and hasattr(backtest_result["equity_curve"], "plot"):
-            equity_curve = backtest_result["equity_curve"]
-            equity_curve.plot()
-            plt.title(f"策略净值曲线 - {backtest_result.get('strategy', '')} ({backtest_result.get('stock_code', '')})")
-            plt.xlabel("日期")
-            plt.ylabel("净值")
+        if 'equity_curve' in backtest_result and not isinstance(backtest_result['equity_curve'], str) and not backtest_result['equity_curve'].empty:
+            equity = backtest_result['equity_curve']
+            plt.plot(equity, linewidth=2)
+            
+            strategy_name = backtest_result.get('strategy_name', '未知策略')
+            stock_code = backtest_result.get('stock_code', '未知股票')
+            total_return = backtest_result.get('total_return', 0) * 100
+            
+            plt.title(f"{strategy_name} - {stock_code} 净值曲线 (总收益: {total_return:.2f}%)", fontsize=16, pad=20)
+            plt.xlabel('日期', fontsize=12)
+            plt.ylabel('净值', fontsize=12)
             plt.grid(True)
+            
+            # 添加初始投资水平线
+            plt.axhline(y=1.0, color='r', linestyle='--', alpha=0.3)
+            
+            return plt.gcf()
         else:
-            plt.title("净值曲线不可用")
-        
-        return fig
+            plt.title('无净值曲线数据', fontsize=14, pad=20)
+            return plt.gcf()
     
     def _plot_drawdown(self, backtest_result: Dict[str, Any]) -> plt.Figure:
         """绘制回撤曲线
         
         Args:
-            backtest_result: 回测结果字典
+            backtest_result: 回测结果
             
         Returns:
-            matplotlib图表
+            回撤曲线图
         """
-        fig = plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(12, 8))
         
-        if "equity_curve" in backtest_result and hasattr(backtest_result["equity_curve"], "cummax"):
-            equity = backtest_result["equity_curve"]
+        if 'equity_curve' in backtest_result and not isinstance(backtest_result['equity_curve'], str) and not backtest_result['equity_curve'].empty:
+            equity = backtest_result['equity_curve']
             drawdown = (equity.cummax() - equity) / equity.cummax()
-            drawdown.plot()
-            plt.title(f"策略回撤曲线 - {backtest_result.get('strategy', '')} ({backtest_result.get('stock_code', '')})")
-            plt.xlabel("日期")
-            plt.ylabel("回撤比例")
+            plt.plot(drawdown, color='red', linewidth=2)
+            
+            strategy_name = backtest_result.get('strategy_name', '未知策略')
+            stock_code = backtest_result.get('stock_code', '未知股票')
+            max_dd = backtest_result.get('max_drawdown', 0) * 100
+            
+            plt.title(f"{strategy_name} - {stock_code} 回撤曲线 (最大回撤: {max_dd:.2f}%)", fontsize=16, pad=20)
+            plt.xlabel('日期', fontsize=12)
+            plt.ylabel('回撤比例', fontsize=12)
             plt.grid(True)
+            
+            return plt.gcf()
         else:
-            plt.title("回撤曲线不可用")
+            plt.title('无回撤数据', fontsize=14, pad=20)
+            return plt.gcf()
+    
+    def _get_strategy_params(self, strategy_name: str) -> Dict[str, Any]:
+        """获取策略参数
         
-        return fig
+        Args:
+            strategy_name: 策略名称
+            
+        Returns:
+            策略参数字典
+        """
+        strategy_params = {}
+        if strategy_name == "bollinger":
+            strategy_params = {"period": 20, "num_std": 2.0}
+        elif strategy_name == "rsi":
+            strategy_params = {"period": 14, "overbought": 70, "oversold": 30}
+        elif strategy_name == "macd":
+            strategy_params = {"fast_period": 12, "slow_period": 26, "signal_period": 9}
+        
+        return strategy_params
     
     def launch(self, share: bool = False):
         """启动Web界面

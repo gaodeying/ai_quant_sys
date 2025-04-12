@@ -35,7 +35,9 @@ class Backtester:
                      stock_code: str, 
                      start_date: str, 
                      end_date: str,
-                     use_cache: bool = True) -> Dict[str, Any]:
+                     initial_capital: Optional[float] = None,
+                     use_cache: bool = True,
+                     save_result: bool = True) -> Dict[str, Any]:
         """运行单个股票的回测
         
         Args:
@@ -43,7 +45,9 @@ class Backtester:
             stock_code: 股票代码
             start_date: 开始日期
             end_date: 结束日期
+            initial_capital: 初始资金，如果未提供则使用默认值
             use_cache: 是否使用缓存数据
+            save_result: 是否保存回测结果
             
         Returns:
             回测结果字典
@@ -60,7 +64,7 @@ class Backtester:
         stock_data_with_indicators = self.data_loader.calculate_technical_indicators(stock_data)
         
         # 运行策略评估
-        backtest_result = strategy.evaluate(stock_data_with_indicators, self.initial_capital)
+        backtest_result = strategy.evaluate(stock_data_with_indicators, initial_capital or self.initial_capital)
         
         # 添加回测元信息
         backtest_result.update({
@@ -68,12 +72,16 @@ class Backtester:
             'start_date': start_date,
             'end_date': end_date,
             'strategy_name': strategy.name,
-            'initial_capital': self.initial_capital,
+            'initial_capital': initial_capital or self.initial_capital,
             'backtest_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         })
         
         # 保存回测结果
-        self._save_backtest_result(backtest_result, stock_code, strategy.name)
+        if save_result:
+            try:
+                self._save_backtest_result(backtest_result, stock_code, strategy.name)
+            except Exception as e:
+                logger.error(f"保存回测结果失败: {str(e)}")
         
         logger.info(f"回测完成: {stock_code}, 总回报率: {backtest_result['total_return']:.2%}")
         return backtest_result
@@ -205,7 +213,37 @@ class Backtester:
         
         return plt.gcf()
     
-    def _save_backtest_result(self, result: Dict[str, Any], stock_code: str, strategy_name: str) -> None:
+    def _prepare_result_for_json(self, result: Dict[str, Any]) -> Dict[str, Any]:
+        """准备回测结果以进行JSON序列化
+        
+        Args:
+            result: 原始回测结果字典
+            
+        Returns:
+            处理后的可JSON序列化的字典
+        """
+        result_copy = result.copy()
+        
+        # 处理pandas Series和DataFrame
+        if 'equity_curve' in result_copy and isinstance(result_copy['equity_curve'], (pd.Series, pd.DataFrame)):
+            # 将索引转换为字符串
+            equity_curve_dict = {}
+            for date, value in result_copy['equity_curve'].items():
+                equity_curve_dict[str(date)] = value
+            result_copy['equity_curve'] = equity_curve_dict
+            
+        # 处理numpy数值类型
+        for key, value in result_copy.items():
+            if isinstance(value, (np.int64, np.float64)):
+                result_copy[key] = float(value)
+            elif isinstance(value, np.ndarray):
+                result_copy[key] = value.tolist()
+            elif isinstance(value, pd.Timestamp):
+                result_copy[key] = str(value)
+                
+        return result_copy
+        
+    def _save_backtest_result(self, result: Dict[str, Any], stock_code: str, strategy_name: str):
         """保存回测结果
         
         Args:
@@ -213,21 +251,23 @@ class Backtester:
             stock_code: 股票代码
             strategy_name: 策略名称
         """
-        # 处理不可序列化的对象
-        result_copy = result.copy()
-        if 'equity_curve' in result_copy and not isinstance(result_copy['equity_curve'], str):
-            result_copy['equity_curve'] = result_copy['equity_curve'].to_dict()
+        try:
+            # 准备结果进行JSON序列化
+            result_copy = self._prepare_result_for_json(result)
             
-        # 生成文件名
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        file_name = f"{stock_code}_{strategy_name}_{timestamp}.json"
-        file_path = self.results_dir / file_name
-        
-        # 保存结果
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(result_copy, f, ensure_ascii=False, indent=4)
-        
-        logger.info(f"回测结果已保存: {file_path}")
+            # 生成文件名
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            filename = f"{stock_code}_{strategy_name}_{timestamp}.json"
+            filepath = self.results_dir / filename
+            
+            # 保存结果
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(result_copy, f, ensure_ascii=False, indent=4)
+                
+            logger.info(f"回测结果已保存: {filepath}")
+            
+        except Exception as e:
+            logger.error(f"保存回测结果失败: {str(e)}")
     
     def _calculate_portfolio_performance(self, results: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
         """计算投资组合整体表现

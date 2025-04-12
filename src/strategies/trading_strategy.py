@@ -4,30 +4,30 @@ from abc import ABC, abstractmethod
 from typing import Dict, List, Optional, Union, Any
 from datetime import datetime, timedelta
 
-from src.utils.logger import logger
-from configs.config import BOLLINGER_PERIOD, RSI_PERIOD, MACD_FAST, MACD_SLOW, MACD_SIGNAL
+from loguru import logger
+from configs.config import TECHNICAL_PARAMS
 
 class BaseStrategy(ABC):
     """交易策略基类"""
     
-    def __init__(self, name: str = "BaseStrategy"):
-        """初始化策略基类
+    def __init__(self, name: str):
+        """初始化策略
         
         Args:
             name: 策略名称
         """
         self.name = name
-        logger.info(f"策略初始化: {self.name}")
+        logger.info(f"初始化策略: {name}")
     
     @abstractmethod
-    def generate_signals(self, data: pd.DataFrame) -> pd.DataFrame:
+    def generate_signals(self, data: pd.DataFrame) -> pd.Series:
         """生成交易信号
         
         Args:
-            data: 历史价格数据，包含技术指标
+            data: 股票数据，包含技术指标
             
         Returns:
-            添加了信号列的DataFrame
+            交易信号序列，1表示买入，-1表示卖出，0表示持有
         """
         pass
     
@@ -45,8 +45,8 @@ class BaseStrategy(ABC):
         
         # 创建一个DataFrame进行回测
         portfolio = pd.DataFrame(index=signals.index)
-        portfolio['signal'] = signals['signal']
-        portfolio['price'] = signals['Close']
+        portfolio['signal'] = signals
+        portfolio['price'] = data['Close']
         
         # 计算每日回报
         portfolio['returns'] = portfolio['price'].pct_change()
@@ -91,272 +91,195 @@ class BaseStrategy(ABC):
         
 
 class BollingerBandsStrategy(BaseStrategy):
-    """布林带交易策略"""
+    """布林带策略"""
     
-    def __init__(self, period: int = BOLLINGER_PERIOD, num_std: float = 2.0):
+    def __init__(self, period: Optional[int] = None, num_std: float = 2.0):
         """初始化布林带策略
         
         Args:
-            period: 移动平均窗口期
+            period: 移动平均周期
             num_std: 标准差倍数
         """
-        super().__init__(name="BollingerBands")
-        self.period = period
+        super().__init__("布林带策略")
+        self.period = period or TECHNICAL_PARAMS["BB_PERIOD"]
         self.num_std = num_std
         
-    def generate_signals(self, data: pd.DataFrame) -> pd.DataFrame:
-        """生成布林带交易信号
-        
-        Args:
-            data: 历史价格数据
+    def generate_signals(self, data: pd.DataFrame) -> pd.Series:
+        """生成布林带交易信号"""
+        if data.empty:
+            return pd.Series()
             
-        Returns:
-            添加了信号列的DataFrame
-        """
-        df = data.copy()
+        # 计算布林带
+        ma = data["Close"].rolling(window=self.period).mean()
+        std = data["Close"].rolling(window=self.period).std()
+        upper = ma + self.num_std * std
+        lower = ma - self.num_std * std
         
-        # 如果数据不包含布林带，则计算
-        if 'SMA20' not in df.columns or 'Upper_Band' not in df.columns or 'Lower_Band' not in df.columns:
-            df['SMA20'] = df['Close'].rolling(window=self.period).mean()
-            df['STDEV'] = df['Close'].rolling(window=self.period).std()
-            df['Upper_Band'] = df['SMA20'] + (df['STDEV'] * self.num_std)
-            df['Lower_Band'] = df['SMA20'] - (df['STDEV'] * self.num_std)
-            
-        # 生成信号: 1代表做多，-1代表做空，0代表不操作
-        df['signal'] = 0
+        # 生成信号
+        signals = pd.Series(0, index=data.index)
+        signals[data["Close"] <= lower] = 1  # 买入信号
+        signals[data["Close"] >= upper] = -1  # 卖出信号
         
-        # 当价格突破下轨时买入
-        df.loc[df['Close'] < df['Lower_Band'], 'signal'] = 1
-        
-        # 当价格突破上轨时卖出
-        df.loc[df['Close'] > df['Upper_Band'], 'signal'] = -1
-            
-        return df
+        return signals
 
 
 class RSIStrategy(BaseStrategy):
-    """RSI交易策略"""
+    """RSI策略"""
     
-    def __init__(self, period: int = RSI_PERIOD, overbought: float = 70, oversold: float = 30):
+    def __init__(self, period: Optional[int] = None, overbought: float = 70, oversold: float = 30):
         """初始化RSI策略
         
         Args:
-            period: RSI计算周期
+            period: RSI周期
             overbought: 超买阈值
             oversold: 超卖阈值
         """
-        super().__init__(name="RSI")
-        self.period = period
+        super().__init__("RSI策略")
+        self.period = period or TECHNICAL_PARAMS["RSI_PERIOD"]
         self.overbought = overbought
         self.oversold = oversold
         
-    def generate_signals(self, data: pd.DataFrame) -> pd.DataFrame:
-        """生成RSI交易信号
-        
-        Args:
-            data: 历史价格数据
+    def generate_signals(self, data: pd.DataFrame) -> pd.Series:
+        """生成RSI交易信号"""
+        if data.empty:
+            return pd.Series()
             
-        Returns:
-            添加了信号列的DataFrame
-        """
-        df = data.copy()
-        
-        # 如果数据不包含RSI，则计算
-        if 'RSI' not in df.columns:
-            delta = df['Close'].diff()
-            gain = delta.where(delta > 0, 0)
-            loss = -delta.where(delta < 0, 0)
-            
-            avg_gain = gain.rolling(window=self.period).mean()
-            avg_loss = loss.rolling(window=self.period).mean()
-            
-            rs = avg_gain / avg_loss
-            df['RSI'] = 100 - (100 / (1 + rs))
+        # 计算RSI
+        delta = data["Close"].diff()
+        gain = (delta.where(delta > 0, 0)).rolling(window=self.period).mean()
+        loss = (-delta.where(delta < 0, 0)).rolling(window=self.period).mean()
+        rs = gain / loss
+        rsi = 100 - (100 / (1 + rs))
         
         # 生成信号
-        df['signal'] = 0
+        signals = pd.Series(0, index=data.index)
+        signals[rsi <= self.oversold] = 1  # 买入信号
+        signals[rsi >= self.overbought] = -1  # 卖出信号
         
-        # 当RSI低于超卖线时买入
-        df.loc[df['RSI'] < self.oversold, 'signal'] = 1
-        
-        # 当RSI高于超买线时卖出
-        df.loc[df['RSI'] > self.overbought, 'signal'] = -1
-        
-        return df
+        return signals
 
 
 class MACDStrategy(BaseStrategy):
-    """MACD交易策略"""
+    """MACD策略"""
     
-    def __init__(self, fast: int = MACD_FAST, slow: int = MACD_SLOW, signal: int = MACD_SIGNAL):
+    def __init__(
+        self, 
+        fast_period: Optional[int] = None,
+        slow_period: Optional[int] = None,
+        signal_period: Optional[int] = None
+    ):
         """初始化MACD策略
         
         Args:
-            fast: 短期EMA周期
-            slow: 长期EMA周期
-            signal: 信号线周期
+            fast_period: 快线周期
+            slow_period: 慢线周期
+            signal_period: 信号线周期
         """
-        super().__init__(name="MACD")
-        self.fast = fast
-        self.slow = slow
-        self.signal = signal
+        super().__init__("MACD策略")
+        self.fast_period = fast_period if fast_period is not None else TECHNICAL_PARAMS["MACD_FAST"]
+        self.slow_period = slow_period if slow_period is not None else TECHNICAL_PARAMS["MACD_SLOW"]
+        self.signal_period = signal_period if signal_period is not None else TECHNICAL_PARAMS["MACD_SIGNAL"]
         
-    def generate_signals(self, data: pd.DataFrame) -> pd.DataFrame:
-        """生成MACD交易信号
-        
-        Args:
-            data: 历史价格数据
+    def generate_signals(self, data: pd.DataFrame) -> pd.Series:
+        """生成MACD交易信号"""
+        if data.empty:
+            return pd.Series()
             
-        Returns:
-            添加了信号列的DataFrame
-        """
-        df = data.copy()
-        
-        # 如果数据不包含MACD相关指标，则计算
-        if 'MACD' not in df.columns or 'Signal' not in df.columns:
-            df['EMA_fast'] = df['Close'].ewm(span=self.fast, adjust=False).mean()
-            df['EMA_slow'] = df['Close'].ewm(span=self.slow, adjust=False).mean()
-            df['MACD'] = df['EMA_fast'] - df['EMA_slow']
-            df['Signal'] = df['MACD'].ewm(span=self.signal, adjust=False).mean()
-            df['Histogram'] = df['MACD'] - df['Signal']
+        # 计算MACD
+        exp1 = data["Close"].ewm(span=self.fast_period, adjust=False).mean()
+        exp2 = data["Close"].ewm(span=self.slow_period, adjust=False).mean()
+        macd = exp1 - exp2
+        signal = macd.ewm(span=self.signal_period, adjust=False).mean()
+        hist = macd - signal
         
         # 生成信号
-        df['signal'] = 0
+        signals = pd.Series(0, index=data.index)
+        signals[hist > 0] = 1  # 买入信号
+        signals[hist < 0] = -1  # 卖出信号
         
-        # MACD金叉买入信号
-        df.loc[(df['MACD'] > df['Signal']) & (df['MACD'].shift(1) <= df['Signal'].shift(1)), 'signal'] = 1
-        
-        # MACD死叉卖出信号
-        df.loc[(df['MACD'] < df['Signal']) & (df['MACD'].shift(1) >= df['Signal'].shift(1)), 'signal'] = -1
-        
-        return df
+        return signals
 
 
 class CombinedStrategy(BaseStrategy):
-    """组合策略：结合多个技术指标"""
+    """组合策略"""
     
     def __init__(self):
         """初始化组合策略"""
-        super().__init__(name="Combined")
-        self.bb_strategy = BollingerBandsStrategy()
-        self.rsi_strategy = RSIStrategy()
-        self.macd_strategy = MACDStrategy()
+        super().__init__("组合策略")
+        self.strategies = [
+            BollingerBandsStrategy(),
+            RSIStrategy(),
+            MACDStrategy()
+        ]
         
-    def generate_signals(self, data: pd.DataFrame) -> pd.DataFrame:
-        """生成组合策略交易信号
-        
-        Args:
-            data: 历史价格数据
+    def generate_signals(self, data: pd.DataFrame) -> pd.Series:
+        """生成组合策略信号"""
+        if data.empty:
+            return pd.Series()
             
-        Returns:
-            添加了信号列的DataFrame
-        """
-        df = data.copy()
-        
         # 获取各个策略的信号
-        bb_signals = self.bb_strategy.generate_signals(df)['signal']
-        rsi_signals = self.rsi_strategy.generate_signals(df)['signal']
-        macd_signals = self.macd_strategy.generate_signals(df)['signal']
-        
-        # 组合信号：使用多数决策规则
-        df['signal'] = 0
-        
-        # 至少两个策略给出买入信号时买入
-        df.loc[(bb_signals + rsi_signals + macd_signals) >= 2, 'signal'] = 1
-        
-        # 至少两个策略给出卖出信号时卖出
-        df.loc[(bb_signals + rsi_signals + macd_signals) <= -2, 'signal'] = -1
-        
-        return df
-
-
-class AIEnhancedStrategy(BaseStrategy):
-    """AI增强策略：结合大模型信号和技术指标"""
-    
-    def __init__(self, ai_signals: Dict[str, str]):
-        """初始化AI增强策略
-        
-        Args:
-            ai_signals: AI生成的交易信号，格式为{日期: 信号}
-        """
-        super().__init__(name="AIEnhanced")
-        self.ai_signals = ai_signals
-        self.combined_strategy = CombinedStrategy()
-        
-    def generate_signals(self, data: pd.DataFrame) -> pd.DataFrame:
-        """生成AI增强策略交易信号
-        
-        Args:
-            data: 历史价格数据
+        signals = []
+        for strategy in self.strategies:
+            signals.append(strategy.generate_signals(data))
             
-        Returns:
-            添加了信号列的DataFrame
-        """
-        df = data.copy()
+        # 组合信号（简单投票机制）
+        combined = sum(signals)
+        final_signals = pd.Series(0, index=data.index)
+        final_signals[combined > 1] = 1  # 多数策略看多
+        final_signals[combined < -1] = -1  # 多数策略看空
         
-        # 获取技术指标组合策略信号
-        tech_signals = self.combined_strategy.generate_signals(df)['signal']
-        
-        # 添加AI信号
-        df['ai_signal'] = 0
-        
-        # 将AI信号转换为数值
-        for date, signal in self.ai_signals.items():
-            if date in df.index:
-                if signal.lower() in ['买入', 'buy', 'long']:
-                    df.loc[date, 'ai_signal'] = 1
-                elif signal.lower() in ['卖出', 'sell', 'short']:
-                    df.loc[date, 'ai_signal'] = -1
-        
-        # 组合技术指标信号和AI信号
-        # AI信号权重更高
-        df['signal'] = 0
-        
-        # 如果AI信号和技术信号一致，则跟随信号
-        df.loc[(df['ai_signal'] == 1) & (tech_signals >= 0), 'signal'] = 1
-        df.loc[(df['ai_signal'] == -1) & (tech_signals <= 0), 'signal'] = -1
-        
-        # 如果AI信号强烈（例如，连续两天相同信号），则忽略技术信号
-        df.loc[df['ai_signal'] == 1, 'signal'] = 1
-        df.loc[df['ai_signal'] == -1, 'signal'] = -1
-        
-        return df
+        return final_signals
 
 
 class StrategyFactory:
-    """策略工厂：用于创建和管理不同的交易策略"""
+    """策略工厂类"""
     
-    @staticmethod
-    def create_strategy(strategy_name: str, **kwargs) -> BaseStrategy:
+    _strategies = {
+        "bollinger": BollingerBandsStrategy,
+        "rsi": RSIStrategy,
+        "macd": MACDStrategy,
+        "combined": CombinedStrategy
+    }
+    
+    _param_mappings = {
+        "macd": {
+            "fast_period": "fast_period",
+            "slow_period": "slow_period",
+            "signal_period": "signal_period"
+        },
+        "bollinger": {
+            "period": "period",
+            "std": "num_std"
+        },
+        "rsi": {
+            "period": "period",
+            "overbought": "overbought",
+            "oversold": "oversold"
+        }
+    }
+    
+    @classmethod
+    def create_strategy(cls, strategy_name: str, **kwargs) -> BaseStrategy:
         """创建策略实例
         
         Args:
             strategy_name: 策略名称
             **kwargs: 策略参数
+        """
+        if strategy_name not in cls._strategies:
+            raise ValueError(f"不支持的策略类型: {strategy_name}")
             
-        Returns:
-            策略实例
-        """
-        strategies = {
-            'bollinger': BollingerBandsStrategy,
-            'rsi': RSIStrategy,
-            'macd': MACDStrategy,
-            'combined': CombinedStrategy,
-            'ai_enhanced': AIEnhancedStrategy
-        }
-        
-        if strategy_name.lower() not in strategies:
-            logger.error(f"未知策略: {strategy_name}")
-            raise ValueError(f"未知策略: {strategy_name}")
-        
-        strategy_class = strategies[strategy_name.lower()]
-        return strategy_class(**kwargs)
+        # 如果存在参数映射，进行转换
+        if strategy_name in cls._param_mappings:
+            mapped_kwargs = {}
+            for api_param, strat_param in cls._param_mappings[strategy_name].items():
+                if api_param in kwargs:
+                    mapped_kwargs[strat_param] = kwargs[api_param]
+            kwargs = mapped_kwargs
+            
+        return cls._strategies[strategy_name](**kwargs)
     
-    @staticmethod
-    def get_available_strategies() -> List[str]:
-        """获取可用策略列表
-        
-        Returns:
-            策略名称列表
-        """
-        return ['bollinger', 'rsi', 'macd', 'combined', 'ai_enhanced'] 
+    @classmethod
+    def get_available_strategies(cls) -> List[str]:
+        """获取可用的策略列表"""
+        return list(cls._strategies.keys()) 

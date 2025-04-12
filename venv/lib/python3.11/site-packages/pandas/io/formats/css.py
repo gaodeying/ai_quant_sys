@@ -5,15 +5,20 @@ from __future__ import annotations
 
 import re
 from typing import (
+    TYPE_CHECKING,
     Callable,
-    Generator,
-    Iterable,
-    Iterator,
 )
 import warnings
 
 from pandas.errors import CSSWarning
 from pandas.util._exceptions import find_stack_level
+
+if TYPE_CHECKING:
+    from collections.abc import (
+        Generator,
+        Iterable,
+        Iterator,
+    )
 
 
 def _side_expander(prop_fmt: str) -> Callable:
@@ -201,17 +206,15 @@ class CSSResolver:
 
     CSS_EXPANSIONS = {
         **{
-            "-".join(["border", prop] if prop else ["border"]): _border_expander(prop)
+            (f"border-{prop}" if prop else "border"): _border_expander(prop)
             for prop in ["", "top", "right", "bottom", "left"]
         },
         **{
-            "-".join(["border", prop]): _side_expander("border-{:s}-" + prop)
+            f"border-{prop}": _side_expander(f"border-{{:s}}-{prop}")
             for prop in ["color", "style", "width"]
         },
-        **{
-            "margin": _side_expander("margin-{:s}"),
-            "padding": _side_expander("padding-{:s}"),
-        },
+        "margin": _side_expander("margin-{:s}"),
+        "padding": _side_expander("padding-{:s}"),
     }
 
     def __call__(
@@ -336,7 +339,7 @@ class CSSResolver:
                     )
         return props
 
-    def size_to_pt(self, in_val, em_pt=None, conversions=UNIT_RATIOS):
+    def size_to_pt(self, in_val, em_pt=None, conversions=UNIT_RATIOS) -> str:
         def _error():
             warnings.warn(
                 f"Unhandled size: {repr(in_val)}",

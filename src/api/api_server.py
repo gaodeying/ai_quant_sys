@@ -6,6 +6,8 @@ from pydantic import BaseModel
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timedelta
 import json
+import numpy as np
+import pandas as pd
 
 # 获取项目根目录
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -14,7 +16,14 @@ sys.path.insert(0, ROOT_DIR)
 try:
     from src.utils.logger import logger
     from src.data.data_loader import DataLoader
-    from configs.config import APP_HOST, APP_PORT, STOCK_POOL, BACKTEST_START, BACKTEST_END
+    from configs.config import (
+        API_HOST,
+        API_PORT,
+        STOCK_POOL,
+        BACKTEST_START,
+        INITIAL_CAPITAL,
+        TECHNICAL_PARAMS
+    )
 except ImportError as e:
     print(f"导入错误: {e}")
     print(f"当前Python路径: {sys.path}")
@@ -66,9 +75,16 @@ class BacktestRequest(BaseModel):
     stock_code: str
     strategy_name: str
     start_date: Optional[str] = BACKTEST_START
-    end_date: Optional[str] = BACKTEST_END
-    initial_capital: Optional[float] = 100000.0
-    
+    end_date: Optional[str] = datetime.now().strftime('%Y-%m-%d')
+    initial_capital: Optional[float] = INITIAL_CAPITAL
+    # 策略参数
+    fast_period: Optional[int] = TECHNICAL_PARAMS["MACD_FAST"]
+    slow_period: Optional[int] = TECHNICAL_PARAMS["MACD_SLOW"]
+    signal_period: Optional[int] = TECHNICAL_PARAMS["MACD_SIGNAL"]
+    num_std: Optional[float] = TECHNICAL_PARAMS["BB_STD"]
+    overbought: Optional[float] = 70
+    oversold: Optional[float] = 30
+
 class AnalysisRequest(BaseModel):
     """分析请求模型"""
     stock_code: str
@@ -77,12 +93,15 @@ class AnalysisRequest(BaseModel):
 class StrategyRequest(BaseModel):
     """策略参数请求模型"""
     strategy_name: str
-    period: Optional[int] = None
-    fast: Optional[int] = None
-    slow: Optional[int] = None
-    signal: Optional[int] = None
+    # MACD策略参数
+    fast_period: Optional[int] = None
+    slow_period: Optional[int] = None
+    signal_period: Optional[int] = None
+    # RSI策略参数
     overbought: Optional[float] = None
     oversold: Optional[float] = None
+    # 布林带策略参数
+    num_std: Optional[float] = None
 
 # API路由
 @app.get("/")
@@ -149,38 +168,65 @@ async def analyze_stock(request: AnalysisRequest):
 async def run_backtest(request: BacktestRequest):
     """运行策略回测"""
     try:
+        # 记录请求参数
+        logger.info(f"收到回测请求: {request.dict()}")
+        
         # 创建策略实例
-        strategy_params = {}
+        params = {}
         if request.strategy_name == "bollinger":
-            strategy_params = {"period": 20, "num_std": 2.0}
+            if request.num_std is not None:
+                params["num_std"] = request.num_std
         elif request.strategy_name == "rsi":
-            strategy_params = {"period": 14, "overbought": 70, "oversold": 30}
+            if request.overbought is not None:
+                params["overbought"] = request.overbought
+            if request.oversold is not None:
+                params["oversold"] = request.oversold
         elif request.strategy_name == "macd":
-            strategy_params = {"fast": 12, "slow": 26, "signal": 9}
-            
-        strategy = StrategyFactory.create_strategy(request.strategy_name, **strategy_params)
+            if request.fast_period is not None:
+                params["fast_period"] = request.fast_period
+            if request.slow_period is not None:
+                params["slow_period"] = request.slow_period
+            if request.signal_period is not None:
+                params["signal_period"] = request.signal_period
+        
+        # 创建策略
+        try:
+            strategy = StrategyFactory.create_strategy(request.strategy_name, **params)
+        except Exception as e:
+            logger.error(f"创建策略失败: {str(e)}")
+            return {"error": f"创建策略失败: {str(e)}"}
         
         # 运行回测
-        result = backtester.run_backtest(
-            strategy, 
-            request.stock_code, 
-            request.start_date, 
-            request.end_date
-        )
-        
-        if "error" in result:
-            raise HTTPException(status_code=404, detail=result["error"])
+        try:
+            # 执行回测
+            result = backtester.run_backtest(
+                strategy, 
+                request.stock_code, 
+                request.start_date, 
+                request.end_date,
+                initial_capital=request.initial_capital,
+                save_result=False
+            )
             
-        # 处理结果中的pandas对象
-        if "equity_curve" in result and hasattr(result["equity_curve"], "to_dict"):
-            result["equity_curve"] = result["equity_curve"].to_dict()
+            # 返回简化结果
+            return {
+                "success": True,
+                "stock_code": request.stock_code,
+                "strategy": strategy.name,
+                "total_return": float(result["total_return"]),
+                "max_drawdown": float(result["max_drawdown"]),
+                "sharpe_ratio": float(result["sharpe_ratio"]),
+                "num_trades": int(result["num_trades"]),
+                "win_rate": float(result["win_rate"]),
+                "message": f"回测成功，总回报率: {result['total_return']:.2%}"
+            }
+        except Exception as e:
+            logger.error(f"回测执行失败: {str(e)}")
+            return {"error": f"回测执行失败: {str(e)}"}
             
-        return result
-    except HTTPException:
-        raise
     except Exception as e:
-        logger.error(f"回测失败: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"回测过程中发生未预期错误: {str(e)}")
+        return {"error": f"回测过程中发生未预期错误: {str(e)}"}
 
 @app.get("/api/strategies")
 async def get_strategies():
@@ -199,44 +245,57 @@ async def compare_strategies(background_tasks: BackgroundTasks, stock_code: str)
             StrategyFactory.create_strategy("combined")
         ]
         
-        # 在后台任务中执行比较
-        background_tasks.add_task(
-            backtester.compare_strategies,
-            stock_code,
-            strategies,
-            BACKTEST_START,
-            BACKTEST_END
-        )
-        
-        return {"message": f"策略比较任务已启动，对比 {len(strategies)} 个策略在 {stock_code} 上的表现"}
+        # 运行回测比较
+        results = []
+        for strategy in strategies:
+            result = backtester.run_backtest(
+                strategy,
+                stock_code,
+                BACKTEST_START,
+                datetime.now().strftime('%Y-%m-%d')
+            )
+            results.append({
+                "strategy_name": strategy.name,
+                "performance": result
+            })
+            
+        return {"results": results}
     except Exception as e:
         logger.error(f"策略比较失败: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/portfolio_analysis")
 async def portfolio_analysis(background_tasks: BackgroundTasks, days: int = 90):
-    """分析股票池中所有股票"""
+    """分析投资组合中所有股票"""
     try:
-        background_tasks.add_task(
-            stock_analyzer.analyze_stock_pool,
-            None,  # 使用默认股票池
-            days
-        )
-        
-        return {"message": f"股票池分析任务已启动，分析 {len(STOCK_POOL)} 只股票"}
+        results = stock_analyzer.analyze_stock_pool(days)
+        rankings = stock_analyzer.rank_stocks(results)
+        return {"analysis": results, "rankings": rankings}
     except Exception as e:
-        logger.error(f"股票池分析失败: {str(e)}")
+        logger.error(f"投资组合分析失败: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/backtest_debug")
+async def backtest_debug():
+    """调试回测API"""
+    try:
+        strategy = StrategyFactory.create_strategy("macd")
+        result = {
+            "success": True,
+            "message": "这是一个调试响应，不包含实际回测结果",
+            "strategy_name": strategy.name
+        }
+        return result
+    except Exception as e:
+        logger.error(f"调试时发生错误: {str(e)}")
+        return {"error": str(e)}
 
 def start_api_server():
     """启动API服务器"""
     import uvicorn
-    try:
-        logger.info(f"启动API服务器: {APP_HOST}:{APP_PORT}")
-        uvicorn.run(app, host=APP_HOST, port=APP_PORT)
-    except Exception as e:
-        logger.error(f"启动API服务器失败: {str(e)}")
-        print(f"启动API服务器失败: {str(e)}")
+    port = 8888  # 使用8888端口
+    logger.info(f"启动API服务器: {API_HOST}:{port}")
+    uvicorn.run(app, host=API_HOST, port=port)
 
 if __name__ == "__main__":
     start_api_server()

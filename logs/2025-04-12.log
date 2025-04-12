@@ -1,0 +1,957 @@
+2025-04-12 07:55:54 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 07:56:45 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data
+2025-04-12 07:56:47 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 07:56:47 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 07:56:47 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 07:57:19 | INFO     | __main__:main:162 - 已启用调试模式
+2025-04-12 07:57:19 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 07:57:19 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 07:57:19 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 07:57:19 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 07:57:19 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 07:57:19 | INFO     | src.api.api_server:start_api_server:235 - 启动API服务器: 127.0.0.1:8080
+2025-04-12 07:57:19 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 07:57:19 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data
+2025-04-12 07:57:19 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 07:57:19 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 07:57:19 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 07:57:19 | INFO     | src.ui.app:__init__:65 - Web界面应用初始化完成
+2025-04-12 07:57:19 | INFO     | src.ui.app:launch:569 - 启动Web界面，共享模式: True
+2025-04-12 08:00:56 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9988.HK (阿里巴巴), 天数: 90
+2025-04-12 08:00:56 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9988.HK (阿里巴巴), 天数: 90
+2025-04-12 08:00:56 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9988.HK (阿里巴巴), 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:00:57 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9988.HK (阿里巴巴)
+2025-04-12 08:00:57 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 08:00:57 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9988.HK (阿里巴巴)
+2025-04-12 08:01:42 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9988.HK (阿里巴巴), 天数: 58
+2025-04-12 08:01:42 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9988.HK (阿里巴巴), 天数: 58
+2025-04-12 08:01:42 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9988.HK (阿里巴巴), 日期范围: 2025-02-13 至 2025-04-12
+2025-04-12 08:01:43 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9988.HK (阿里巴巴)
+2025-04-12 08:01:43 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 08:01:43 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9988.HK (阿里巴巴)
+2025-04-12 08:01:47 | INFO     | src.ui.app:run_backtest:261 - UI请求: 回测 [], 策略: [], 日期: 2023-01-01 至 2023-12-31
+2025-04-12 08:01:47 | ERROR    | src.ui.app:run_backtest:316 - 回测过程中出错: 'list' object has no attribute 'lower'
+2025-04-12 08:01:56 | INFO     | src.ui.app:run_backtest:261 - UI请求: 回测 9988.HK (阿里巴巴), 策略: bollinger, 日期: 2023-01-01 至 2023-12-31
+2025-04-12 08:01:56 | INFO     | src.strategies.trading_strategy:__init__:20 - 策略初始化: BollingerBands
+2025-04-12 08:01:56 | INFO     | src.backtest.backtester:run_backtest:51 - 开始回测: 股票=9988.HK (阿里巴巴), 策略=BollingerBands, 日期范围: 2023-01-01 至 2023-12-31
+2025-04-12 08:01:56 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9988.HK (阿里巴巴), 日期范围: 2023-01-01 至 2023-12-31
+2025-04-12 08:01:57 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9988.HK (阿里巴巴)
+2025-04-12 08:01:57 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 08:01:57 | ERROR    | src.backtest.backtester:run_backtest:56 - 无法获取股票数据: 9988.HK (阿里巴巴)
+2025-04-12 08:01:57 | ERROR    | src.ui.app:run_backtest:284 - 回测错误: 无法获取股票数据: 9988.HK (阿里巴巴)
+2025-04-12 08:02:03 | INFO     | src.ui.app:analyze_portfolio:425 - UI请求: 分析股票池, 天数: 90
+2025-04-12 08:02:03 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 阿里巴巴, 天数: 90
+2025-04-12 08:02:03 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9988.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:04 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9988.HK
+2025-04-12 08:02:04 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 08:02:04 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/9988_HK_2025-01-12_2025-04-12.csv
+2025-04-12 08:02:04 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:05 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 08:02:05 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 08:02:05 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 08:02:05 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 08:02:05 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 08:02:05 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 08:02:05 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9988.HK
+2025-04-12 08:02:05 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/9988_HK_fundamentals.json
+2025-04-12 08:02:05 | ERROR    | src.utils.deepseek_client:analyze_stock:85 - API请求失败: 401
+2025-04-12 08:02:05 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:05 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 腾讯控股, 天数: 90
+2025-04-12 08:02:05 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 0700.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:06 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 0700.HK
+2025-04-12 08:02:06 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 08:02:06 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/0700_HK_2025-01-12_2025-04-12.csv
+2025-04-12 08:02:06 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 08:02:07 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 0700.HK
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/0700_HK_fundamentals.json
+2025-04-12 08:02:07 | ERROR    | src.utils.deepseek_client:analyze_stock:85 - API请求失败: 401
+2025-04-12 08:02:07 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:07 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 京东集团, 天数: 90
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/9618_HK_2025-01-12_2025-04-12.csv
+2025-04-12 08:02:07 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 08:02:08 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9618.HK
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/9618_HK_fundamentals.json
+2025-04-12 08:02:08 | ERROR    | src.utils.deepseek_client:analyze_stock:85 - API请求失败: 401
+2025-04-12 08:02:08 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:08 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 快手, 天数: 90
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 1024.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:08 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 1024.HK
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/1024_HK_2025-01-12_2025-04-12.csv
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 08:02:09 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 1024.HK
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/1024_HK_fundamentals.json
+2025-04-12 08:02:09 | ERROR    | src.utils.deepseek_client:analyze_stock:85 - API请求失败: 401
+2025-04-12 08:02:09 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:09 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 百度集团, 天数: 90
+2025-04-12 08:02:09 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9888.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:10 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9888.HK
+2025-04-12 08:02:10 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 08:02:10 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/9888_HK_2025-01-12_2025-04-12.csv
+2025-04-12 08:02:10 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 08:02:11 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 08:02:11 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 08:02:11 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 08:02:11 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 08:02:11 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 08:02:11 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 08:02:11 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9888.HK
+2025-04-12 08:02:11 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/9888_HK_fundamentals.json
+2025-04-12 08:02:11 | ERROR    | src.utils.deepseek_client:analyze_stock:85 - API请求失败: 401
+2025-04-12 08:02:11 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:11 | INFO     | src.models.stock_analyzer:rank_stocks:109 - 开始对股票进行排名
+2025-04-12 08:02:11 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:11 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:11 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:11 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:11 | ERROR    | src.utils.deepseek_client:generate_trading_signal:130 - API请求失败: 401
+2025-04-12 08:02:11 | INFO     | src.models.stock_analyzer:rank_stocks:148 - 股票排名完成，共5支股票
+2025-04-12 08:04:39 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:05:28 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:06:11 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:08:21 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:08:21 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:08:21 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9988.HK, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:08:22 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9988.HK
+2025-04-12 08:08:22 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 08:08:22 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:08:30 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:08:31 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:08:31 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:08:31 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:08:31 | INFO     | src.backtest.backtester:run_backtest:51 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:08:31 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:09:01 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:09:03 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:09:03 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:09:03 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:09:03 | INFO     | src.backtest.backtester:run_backtest:51 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:09:03 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:09:03 | ERROR    | src.backtest.backtester:_save_backtest_result:256 - 保存回测结果失败: keys must be str, int, float, bool or None, not Timestamp
+2025-04-12 08:09:03 | INFO     | src.backtest.backtester:run_backtest:78 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:09:10 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:10:16 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:10:22 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:10:41 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:10:43 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:10:44 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:10:44 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:10:44 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:10:44 | INFO     | __main__:start_api_server:241 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:10:46 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:10:48 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:10:49 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:10:49 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:10:49 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:10:49 | INFO     | __main__:start_api_server:241 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:11:05 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:11:07 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:11:07 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:11:07 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:11:07 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:11:07 | INFO     | __main__:start_api_server:241 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:11:21 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:11:44 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:11:46 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:11:46 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:11:46 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:11:46 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:11:46 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:11:46 | INFO     | __main__:start_api_server:241 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:12:10 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:12:13 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:12:13 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:12:13 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:12:13 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:12:13 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:12:13 | INFO     | __main__:start_api_server:241 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:12:34 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:12:35 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:12:36 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:12:36 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:12:36 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:12:36 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:12:36 | INFO     | __main__:start_api_server:250 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:12:51 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:12:54 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:12:54 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:12:54 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:12:54 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:12:54 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:12:54 | INFO     | __main__:start_api_server:250 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:13:14 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:13:16 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:13:16 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:13:16 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:13:16 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:13:16 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:13:17 | INFO     | __main__:start_api_server:250 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:13:37 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:13:39 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:13:39 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:13:39 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:13:39 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:13:39 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:13:39 | INFO     | __main__:start_api_server:255 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:15:04 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:15:06 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:15:06 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:15:07 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:15:07 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:15:07 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:15:07 | INFO     | __main__:start_api_server:264 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:15:54 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:15:56 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:15:56 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:15:56 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:15:56 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:15:56 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:15:56 | INFO     | __main__:start_api_server:269 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:16:27 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:16:29 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:16:29 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:16:29 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:16:29 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:16:29 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:16:30 | INFO     | __main__:start_api_server:270 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:17:08 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:17:10 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:17:10 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:17:10 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:17:10 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:17:10 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:17:10 | INFO     | __main__:start_api_server:270 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:17:37 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:17:39 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:17:39 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:17:39 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:17:39 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:17:39 | INFO     | __main__:start_api_server:270 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:18:17 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:18:37 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:18:37 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:18:39 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:18:39 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:18:39 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:18:39 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:18:40 | INFO     | __main__:start_api_server:270 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:20:05 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:20:07 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:20:07 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:20:07 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:20:07 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:20:07 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:20:07 | INFO     | __main__:start_api_server:270 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:20:29 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:20:31 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:20:31 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:20:31 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:20:31 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:20:31 | INFO     | __main__:start_api_server:270 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:20:31 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:21:33 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:21:35 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:21:35 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:21:35 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:21:35 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:21:35 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:21:35 | INFO     | __main__:start_api_server:271 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:23:17 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:23:19 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:23:20 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:23:20 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:23:20 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:23:20 | ERROR    | __main__:run_backtest:188 - 回测失败: MACDStrategy.__init__() got an unexpected keyword argument 'fast'
+2025-04-12 08:23:20 | INFO     | __main__:start_api_server:271 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:26:38 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:26:40 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:26:40 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:26:40 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:26:40 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:26:40 | INFO     | __main__:start_api_server:271 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:30:41 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:30:43 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:30:43 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:30:43 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:30:43 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:30:43 | INFO     | __main__:start_api_server:271 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:30:54 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:30:56 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:30:56 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:30:56 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:30:56 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:30:56 | INFO     | __main__:start_api_server:271 - 启动API服务器: 0.0.0.0:8000
+2025-04-12 08:31:18 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:31:20 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:31:20 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:31:20 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:31:20 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:31:20 | INFO     | __main__:start_api_server:272 - 启动API服务器: 0.0.0.0:5000
+2025-04-12 08:32:12 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:32:15 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:32:15 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:32:15 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:32:15 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:32:15 | INFO     | __main__:start_api_server:272 - 启动API服务器: 0.0.0.0:5000
+2025-04-12 08:32:19 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:32:19 | INFO     | src.backtest.backtester:run_backtest:53 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:32:19 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:32:19 | ERROR    | src.backtest.backtester:_save_backtest_result:258 - 保存回测结果失败: keys must be str, int, float, bool or None, not Timestamp
+2025-04-12 08:32:19 | INFO     | src.backtest.backtester:run_backtest:80 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:32:47 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:32:49 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:32:49 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:32:49 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:32:49 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:32:49 | INFO     | __main__:start_api_server:272 - 启动API服务器: 0.0.0.0:5000
+2025-04-12 08:32:49 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:32:49 | INFO     | src.backtest.backtester:run_backtest:53 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:32:49 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:32:49 | ERROR    | src.backtest.backtester:_save_backtest_result:258 - 保存回测结果失败: keys must be str, int, float, bool or None, not Timestamp
+2025-04-12 08:32:49 | INFO     | src.backtest.backtester:run_backtest:80 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:34:31 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:34:33 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:34:33 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:34:33 | INFO     | src.backtest.backtester:run_backtest:53 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:34:33 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:34:33 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:34:33 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:34:33 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:34:33 | ERROR    | src.backtest.backtester:_save_backtest_result:258 - 保存回测结果失败: keys must be str, int, float, bool or None, not Timestamp
+2025-04-12 08:34:33 | INFO     | src.backtest.backtester:run_backtest:80 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:34:33 | INFO     | __main__:start_api_server:286 - 启动API服务器: 0.0.0.0:5000
+2025-04-12 08:35:05 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:35:07 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:35:07 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:35:07 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:35:07 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:35:07 | INFO     | __main__:start_api_server:294 - 启动API服务器: 0.0.0.0:5000
+2025-04-12 08:35:07 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:35:07 | INFO     | src.backtest.backtester:run_backtest:53 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:35:07 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:35:07 | ERROR    | src.backtest.backtester:_save_backtest_result:258 - 保存回测结果失败: keys must be str, int, float, bool or None, not Timestamp
+2025-04-12 08:35:07 | INFO     | src.backtest.backtester:run_backtest:80 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:35:22 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:35:23 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:35:23 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:35:23 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:35:23 | INFO     | src.backtest.backtester:run_backtest:55 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:35:23 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:35:23 | INFO     | src.backtest.backtester:run_backtest:83 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:35:52 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:35:54 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:35:54 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:35:54 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:35:54 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:35:54 | INFO     | __main__:start_api_server:282 - 启动API服务器: 0.0.0.0:5000
+2025-04-12 08:35:54 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:35:54 | INFO     | src.backtest.backtester:run_backtest:53 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:35:54 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:35:54 | ERROR    | src.backtest.backtester:_save_backtest_result:258 - 保存回测结果失败: keys must be str, int, float, bool or None, not Timestamp
+2025-04-12 08:35:54 | INFO     | src.backtest.backtester:run_backtest:80 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:36:26 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:36:28 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:36:28 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:36:28 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:36:28 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:36:28 | INFO     | __main__:start_api_server:282 - 启动API服务器: 0.0.0.0:5000
+2025-04-12 08:36:34 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:36:34 | INFO     | src.backtest.backtester:run_backtest:53 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:36:34 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:36:34 | ERROR    | src.backtest.backtester:_save_backtest_result:258 - 保存回测结果失败: keys must be str, int, float, bool or None, not Timestamp
+2025-04-12 08:36:34 | INFO     | src.backtest.backtester:run_backtest:80 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:36:54 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:36:56 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:36:56 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:36:56 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:36:56 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:36:56 | INFO     | __main__:start_api_server:297 - 启动API服务器: 0.0.0.0:5000
+2025-04-12 08:37:29 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:37:31 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:37:31 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:37:31 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:37:31 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:37:31 | INFO     | __main__:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 08:38:22 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:38:29 | INFO     | __main__:run_backtest:172 - 收到回测请求: {'stock_code': '9988.HK', 'strategy_name': 'macd', 'start_date': '2023-01-01', 'end_date': '2024-03-14', 'initial_capital': 1000000, 'fast_period': 12, 'slow_period': 26, 'signal_period': 9, 'num_std': 2, 'overbought': 70, 'oversold': 30}
+2025-04-12 08:38:29 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 08:38:29 | INFO     | src.backtest.backtester:run_backtest:55 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 08:38:29 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 08:38:29 | INFO     | src.backtest.backtester:run_backtest:86 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 08:41:19 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:41:21 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:41:21 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:41:21 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:41:21 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:41:22 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 08:41:22 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 08:41:22 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 08:41:22 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 08:41:22 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 08:41:22 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 08:41:22 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 08:43:20 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:43:22 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:43:22 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:43:22 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:43:22 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:43:24 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 08:43:24 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 08:43:24 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 08:43:24 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 08:43:24 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 08:43:24 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 08:43:24 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 08:48:58 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:49:00 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:49:00 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:49:00 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:49:00 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:49:02 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 08:49:02 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 08:49:02 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 08:49:02 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 08:49:02 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 08:49:02 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 08:49:02 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 08:50:55 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:50:57 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:50:57 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:50:57 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:50:57 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:50:59 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 08:50:59 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 08:50:59 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 08:50:59 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 08:50:59 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 08:50:59 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 08:50:59 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 08:52:01 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:52:03 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:52:03 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:52:03 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:52:03 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:52:04 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 08:52:04 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 08:52:04 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 08:52:04 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 08:52:04 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 08:52:04 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 08:52:04 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 08:52:04 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:52:04 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:52:04 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:52:04 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:52:04 | INFO     | src.ui.app:__init__:65 - Web界面应用初始化完成
+2025-04-12 08:52:04 | INFO     | src.ui.app:launch:569 - 启动Web界面，共享模式: False
+2025-04-12 08:56:05 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 08:56:06 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:56:07 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:56:07 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:56:07 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:56:08 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 08:56:08 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 08:56:08 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 08:56:08 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 08:56:08 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 08:56:08 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 08:56:08 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 08:56:08 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 08:56:08 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 08:56:08 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 08:56:08 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 08:56:08 | INFO     | src.ui.app:__init__:65 - Web界面应用初始化完成
+2025-04-12 08:56:08 | INFO     | src.ui.app:launch:569 - 启动Web界面，共享模式: False
+2025-04-12 09:11:24 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 09:11:26 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:11:26 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:11:26 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:11:26 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:11:28 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 09:11:28 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 09:11:28 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 09:11:28 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 09:11:28 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 09:11:28 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 09:11:28 | INFO     | __main__:main:193 - 系统已启动，按Ctrl+C退出
+2025-04-12 09:11:40 | INFO     | src.api.api_server:run_backtest:172 - 收到回测请求: {'stock_code': '9988.HK', 'strategy_name': 'macd', 'start_date': '2023-01-01', 'end_date': '2024-03-14', 'initial_capital': 1000000, 'fast_period': 12, 'slow_period': 26, 'signal_period': 9, 'num_std': 2, 'overbought': 70, 'oversold': 30}
+2025-04-12 09:11:40 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 09:11:40 | INFO     | src.backtest.backtester:run_backtest:55 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 09:11:40 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 09:11:40 | INFO     | src.backtest.backtester:run_backtest:86 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 09:11:59 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 09:12:00 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:12:00 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:12:00 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:12:00 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:12:00 | INFO     | src.ui.app:__init__:65 - Web界面应用初始化完成
+2025-04-12 09:12:00 | INFO     | src.ui.app:launch:569 - 启动Web界面，共享模式: False
+2025-04-12 09:22:40 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:22:40 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:22:40 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK (京东集团-SW), 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:22:41 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK (京东集团-SW)
+2025-04-12 09:22:41 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 09:22:41 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9618.HK (京东集团-SW)
+2025-04-12 09:25:14 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:25:14 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:25:14 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK (京东集团-SW), 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:25:15 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK (京东集团-SW)
+2025-04-12 09:25:15 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 09:25:15 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9618.HK (京东集团-SW)
+2025-04-12 09:26:55 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:26:55 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:26:55 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK (京东集团-SW), 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:26:56 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK (京东集团-SW)
+2025-04-12 09:26:56 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 09:26:56 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9618.HK (京东集团-SW)
+2025-04-12 09:29:38 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 09:29:40 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:29:40 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:29:40 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:29:40 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:29:41 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 09:29:41 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 09:29:41 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 09:29:41 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 09:29:41 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 09:29:41 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 09:29:41 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 09:29:41 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:29:41 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:29:41 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:29:41 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:29:42 | INFO     | src.ui.app:__init__:65 - Web界面应用初始化完成
+2025-04-12 09:29:42 | INFO     | src.ui.app:launch:596 - 启动Web界面，共享模式: False
+2025-04-12 09:30:41 | INFO     | __main__:update_data:85 - 开始执行数据更新定时任务
+2025-04-12 09:30:41 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:30:41 | INFO     | __main__:update_data:92 - 更新恒生科技指数数据
+2025-04-12 09:30:41 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:42 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:30:42 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:30:42 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2023-01-02 00:00:00 至 2025-04-11 00:00:00, 数据量: 595
+2025-04-12 09:30:43 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:30:43 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:30:43 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:30:43 | INFO     | __main__:update_data:100 - 更新股票数据: 9618.HK
+2025-04-12 09:30:43 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:44 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK
+2025-04-12 09:30:44 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:30:44 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2023-01-01_2025-04-12.csv
+2025-04-12 09:30:44 | INFO     | __main__:update_data:100 - 更新股票数据: 9999.HK
+2025-04-12 09:30:44 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9999.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:45 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9999.HK
+2025-04-12 09:30:46 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:30:46 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9999_HK_2023-01-01_2025-04-12.csv
+2025-04-12 09:30:46 | INFO     | __main__:update_data:100 - 更新股票数据: 9988.HK
+2025-04-12 09:30:46 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9988.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:47 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9988.HK
+2025-04-12 09:30:47 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:30:47 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2025-04-12.csv
+2025-04-12 09:30:47 | INFO     | __main__:update_data:100 - 更新股票数据: 0700.HK
+2025-04-12 09:30:47 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 0700.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:48 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 0700.HK
+2025-04-12 09:30:48 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:30:48 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/0700_HK_2023-01-01_2025-04-12.csv
+2025-04-12 09:30:48 | INFO     | __main__:update_data:100 - 更新股票数据: 9626.HK
+2025-04-12 09:30:48 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9626.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:49 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9626.HK
+2025-04-12 09:30:50 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:30:50 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9626_HK_2023-01-01_2025-04-12.csv
+2025-04-12 09:30:50 | INFO     | __main__:update_data:100 - 更新股票数据: 1024.HK
+2025-04-12 09:30:50 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 1024.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:51 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 1024.HK
+2025-04-12 09:30:51 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:30:51 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/1024_HK_2023-01-01_2025-04-12.csv
+2025-04-12 09:30:51 | INFO     | __main__:update_data:100 - 更新股票数据: 3690.HK
+2025-04-12 09:30:51 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 3690.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:52 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 3690.HK
+2025-04-12 09:30:53 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:30:53 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/3690_HK_2023-01-01_2025-04-12.csv
+2025-04-12 09:30:53 | INFO     | __main__:update_data:100 - 更新股票数据: 9888.HK
+2025-04-12 09:30:53 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9888.HK, 日期范围: 2023-01-01 至 2025-04-12
+2025-04-12 09:30:53 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9888.HK
+2025-04-12 09:30:54 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:30:54 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9888_HK_2023-01-01_2025-04-12.csv
+2025-04-12 09:30:54 | INFO     | __main__:update_data:105 - 数据更新定时任务完成
+2025-04-12 09:31:03 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 [], 天数: 90
+2025-04-12 09:31:03 | ERROR    | src.ui.app:analyze_stock:245 - 分析股票失败: unhashable type: 'list'
+2025-04-12 09:31:06 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:31:06 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:31:06 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK (京东集团-SW), 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:31:07 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK (京东集团-SW)
+2025-04-12 09:31:07 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 09:31:07 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9618.HK (京东集团-SW)
+2025-04-12 09:31:34 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:31:34 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:31:34 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK (京东集团-SW), 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:31:35 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK (京东集团-SW)
+2025-04-12 09:31:35 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 09:31:35 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9618.HK (京东集团-SW)
+2025-04-12 09:31:41 | INFO     | src.ui.app:analyze_stock:208 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 90
+2025-04-12 09:31:41 | INFO     | src.ui.app:analyze_stock:212 - 提取纯股票代码: 9618.HK
+2025-04-12 09:31:41 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 京东集团-SW, 天数: 90
+2025-04-12 09:31:41 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:31:42 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK
+2025-04-12 09:31:42 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:31:42 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-01-12_2025-04-12.csv
+2025-04-12 09:31:42 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:31:43 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:31:43 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:31:43 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 09:31:43 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:31:43 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:31:43 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:31:43 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9618.HK
+2025-04-12 09:31:44 | WARNING  | src.data.data_loader:get_stock_fundamentals:439 - Yahoo Finance API调用失败: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/9618.HK?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true，使用模拟数据
+2025-04-12 09:31:44 | INFO     | src.data.data_loader:_create_mock_fundamentals:482 - 创建模拟基本面数据: 9618.HK
+2025-04-12 09:31:44 | ERROR    | src.data.data_loader:get_stock_fundamentals:456 - 获取财报数据失败: 9618.HK, 错误: 抱歉，您没有接口访问权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。
+2025-04-12 09:31:44 | INFO     | src.data.data_loader:get_stock_fundamentals:462 - 基本面数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_fundamentals.json
+2025-04-12 09:31:49 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:31:54 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:31:54 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-01-12_2025-04-12.csv
+2025-04-12 09:32:18 | INFO     | src.ui.app:run_backtest:266 - UI请求: 回测 9618.HK (京东集团-SW), 策略: bollinger, 日期范围: 2025-01-01 至 2025-04-12
+2025-04-12 09:32:18 | INFO     | src.ui.app:run_backtest:270 - 提取纯股票代码: 9618.HK
+2025-04-12 09:32:18 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: 布林带策略
+2025-04-12 09:32:18 | INFO     | src.backtest.backtester:run_backtest:55 - 开始回测: 股票=9618.HK, 策略=布林带策略, 日期范围: 2025-01-01 至 2025-04-12
+2025-04-12 09:32:18 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK, 日期范围: 2025-01-01 至 2025-04-12
+2025-04-12 09:32:19 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK
+2025-04-12 09:32:19 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:32:19 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-01-01_2025-04-12.csv
+2025-04-12 09:32:19 | INFO     | src.backtest.backtester:_save_backtest_result:267 - 回测结果已保存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/backtest_results/9618.HK_布林带策略_20250412_093219.json
+2025-04-12 09:32:19 | INFO     | src.backtest.backtester:run_backtest:86 - 回测完成: 9618.HK, 总回报率: 15.98%
+2025-04-12 09:32:29 | INFO     | src.ui.app:analyze_portfolio:430 - UI请求: 分析股票池, 天数: 90
+2025-04-12 09:32:29 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 京东集团-SW, 天数: 90
+2025-04-12 09:32:29 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-01-12_2025-04-12.csv
+2025-04-12 09:32:29 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:32:29 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:32:29 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:32:30 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 09:32:30 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:32:30 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:32:30 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:32:30 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9618.HK
+2025-04-12 09:32:30 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_fundamentals.json
+2025-04-12 09:32:35 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:32:40 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:32:40 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 网易-S, 天数: 90
+2025-04-12 09:32:40 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9999.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:32:41 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9999.HK
+2025-04-12 09:32:41 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:32:41 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9999_HK_2025-01-12_2025-04-12.csv
+2025-04-12 09:32:41 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:32:42 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:32:42 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:32:42 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 09:32:42 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:32:42 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:32:42 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:32:42 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9999.HK
+2025-04-12 09:32:43 | WARNING  | src.data.data_loader:get_stock_fundamentals:439 - Yahoo Finance API调用失败: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/9999.HK?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true，使用模拟数据
+2025-04-12 09:32:43 | INFO     | src.data.data_loader:_create_mock_fundamentals:482 - 创建模拟基本面数据: 9999.HK
+2025-04-12 09:32:44 | ERROR    | src.data.data_loader:get_stock_fundamentals:456 - 获取财报数据失败: 9999.HK, 错误: 抱歉，您没有接口访问权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。
+2025-04-12 09:32:44 | INFO     | src.data.data_loader:get_stock_fundamentals:462 - 基本面数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9999_HK_fundamentals.json
+2025-04-12 09:32:49 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:32:54 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:32:54 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 阿里巴巴-SW, 天数: 90
+2025-04-12 09:32:54 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9988.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:32:55 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9988.HK
+2025-04-12 09:32:55 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:32:55 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2025-01-12_2025-04-12.csv
+2025-04-12 09:32:55 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:32:56 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:32:56 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:32:56 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 09:32:56 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:32:56 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:32:56 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:32:56 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9988.HK
+2025-04-12 09:32:57 | WARNING  | src.data.data_loader:get_stock_fundamentals:439 - Yahoo Finance API调用失败: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/9988.HK?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true，使用模拟数据
+2025-04-12 09:32:57 | INFO     | src.data.data_loader:_create_mock_fundamentals:482 - 创建模拟基本面数据: 9988.HK
+2025-04-12 09:32:57 | ERROR    | src.data.data_loader:get_stock_fundamentals:456 - 获取财报数据失败: 9988.HK, 错误: 抱歉，您没有接口访问权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。
+2025-04-12 09:32:57 | INFO     | src.data.data_loader:get_stock_fundamentals:462 - 基本面数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_fundamentals.json
+2025-04-12 09:33:02 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:33:07 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:33:07 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 腾讯控股, 天数: 90
+2025-04-12 09:33:07 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 0700.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:33:08 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 0700.HK
+2025-04-12 09:33:09 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:33:09 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/0700_HK_2025-01-12_2025-04-12.csv
+2025-04-12 09:33:09 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:33:10 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:33:10 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:33:10 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 09:33:10 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:33:10 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:33:10 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:33:10 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 0700.HK
+2025-04-12 09:33:11 | WARNING  | src.data.data_loader:get_stock_fundamentals:439 - Yahoo Finance API调用失败: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/0700.HK?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true，使用模拟数据
+2025-04-12 09:33:11 | INFO     | src.data.data_loader:_create_mock_fundamentals:482 - 创建模拟基本面数据: 0700.HK
+2025-04-12 09:33:11 | ERROR    | src.data.data_loader:get_stock_fundamentals:456 - 获取财报数据失败: 0700.HK, 错误: 抱歉，您没有接口访问权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。
+2025-04-12 09:33:11 | INFO     | src.data.data_loader:get_stock_fundamentals:462 - 基本面数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/0700_HK_fundamentals.json
+2025-04-12 09:33:16 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:33:21 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:33:21 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 哔哩哔哩-SW, 天数: 90
+2025-04-12 09:33:21 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9626.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:33:22 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9626.HK
+2025-04-12 09:33:23 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:33:23 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9626_HK_2025-01-12_2025-04-12.csv
+2025-04-12 09:33:23 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-01-12 至 2025-04-12
+2025-04-12 09:33:24 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:33:24 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:33:24 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-01-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 65
+2025-04-12 09:33:24 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:33:24 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:33:24 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:33:24 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9626.HK
+2025-04-12 09:33:25 | WARNING  | src.data.data_loader:get_stock_fundamentals:439 - Yahoo Finance API调用失败: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/9626.HK?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true，使用模拟数据
+2025-04-12 09:33:25 | INFO     | src.data.data_loader:_create_mock_fundamentals:482 - 创建模拟基本面数据: 9626.HK
+2025-04-12 09:33:25 | ERROR    | src.data.data_loader:get_stock_fundamentals:456 - 获取财报数据失败: 9626.HK, 错误: 抱歉，您没有接口访问权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。
+2025-04-12 09:33:25 | INFO     | src.data.data_loader:get_stock_fundamentals:462 - 基本面数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9626_HK_fundamentals.json
+2025-04-12 09:33:30 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:33:35 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:33:35 | INFO     | src.models.stock_analyzer:rank_stocks:109 - 开始对股票进行排名
+2025-04-12 09:33:40 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:33:45 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:33:50 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:33:55 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:34:00 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:34:00 | INFO     | src.models.stock_analyzer:rank_stocks:148 - 股票排名完成，共5支股票
+2025-04-12 09:35:26 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 09:35:28 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:35:28 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:35:28 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:35:28 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:35:30 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 09:35:30 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 09:35:30 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 09:35:30 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 09:35:30 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 09:35:30 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 09:35:30 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 09:35:30 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:35:30 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:35:30 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:35:30 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:35:30 | INFO     | src.ui.app:__init__:67 - Web界面应用初始化完成
+2025-04-12 09:35:30 | INFO     | src.ui.app:launch:597 - 启动Web界面，共享模式: False
+2025-04-12 09:35:54 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 30
+2025-04-12 09:35:54 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9618.HK (京东集团-SW), 天数: 30
+2025-04-12 09:35:54 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK (京东集团-SW), 日期范围: 2025-03-13 至 2025-04-12
+2025-04-12 09:35:55 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK (京东集团-SW)
+2025-04-12 09:35:55 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 09:35:55 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9618.HK (京东集团-SW)
+2025-04-12 09:35:58 | INFO     | src.ui.app:analyze_stock:207 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 30
+2025-04-12 09:35:58 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 9618.HK (京东集团-SW), 天数: 30
+2025-04-12 09:35:58 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK (京东集团-SW), 日期范围: 2025-03-13 至 2025-04-12
+2025-04-12 09:35:59 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK (京东集团-SW)
+2025-04-12 09:35:59 | ERROR    | src.data.data_loader:get_stock_data:169 - 处理akshare数据时出错: 'date'
+2025-04-12 09:35:59 | ERROR    | src.models.stock_analyzer:analyze_stock:261 - 无法获取股票数据: 9618.HK (京东集团-SW)
+2025-04-12 09:36:18 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 09:36:19 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:36:19 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:36:19 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:36:19 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:36:21 | INFO     | __main__:setup_scheduler:133 - 设置定时任务
+2025-04-12 09:36:21 | INFO     | __main__:setup_scheduler:137 - 已设置数据更新任务，执行时间: 每日 09:30
+2025-04-12 09:36:21 | INFO     | __main__:setup_scheduler:141 - 已设置策略分析任务，执行时间: 每日 09:45
+2025-04-12 09:36:21 | INFO     | __main__:setup_scheduler:151 - 定时任务调度器已启动
+2025-04-12 09:36:21 | INFO     | __main__:main:174 - 启动 API 服务
+2025-04-12 09:36:21 | INFO     | src.api.api_server:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 09:36:21 | INFO     | __main__:main:180 - 启动 UI 服务
+2025-04-12 09:36:21 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:36:21 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:36:21 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:36:21 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:36:21 | INFO     | src.ui.app:__init__:67 - Web界面应用初始化完成
+2025-04-12 09:36:21 | INFO     | src.ui.app:launch:597 - 启动Web界面，共享模式: False
+2025-04-12 09:36:33 | INFO     | src.ui.app:analyze_stock:210 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 30
+2025-04-12 09:36:33 | INFO     | src.ui.app:analyze_stock:214 - 提取纯股票代码: 9618.HK
+2025-04-12 09:36:33 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 京东集团-SW, 天数: 30
+2025-04-12 09:36:33 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK, 日期范围: 2025-03-13 至 2025-04-12
+2025-04-12 09:36:33 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK
+2025-04-12 09:36:34 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:36:34 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-03-13_2025-04-12.csv
+2025-04-12 09:36:34 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-03-13 至 2025-04-12
+2025-04-12 09:36:35 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:36:35 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:36:35 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-03-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 22
+2025-04-12 09:36:35 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:36:35 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:36:35 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:36:35 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9618.HK
+2025-04-12 09:36:35 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_fundamentals.json
+2025-04-12 09:36:40 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:36:45 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:36:45 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-03-13_2025-04-12.csv
+2025-04-12 09:36:45 | ERROR    | src.ui.app:_plot_stock_data:506 - 绘制股票图表时出错: 'close'
+2025-04-12 09:43:04 | INFO     | src.ui.app:analyze_stock:210 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 30
+2025-04-12 09:43:04 | INFO     | src.ui.app:analyze_stock:214 - 提取纯股票代码: 9618.HK
+2025-04-12 09:43:04 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 京东集团-SW, 天数: 30
+2025-04-12 09:43:04 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-03-13_2025-04-12.csv
+2025-04-12 09:43:04 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-03-13 至 2025-04-12
+2025-04-12 09:43:05 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:43:05 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:43:05 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-03-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 22
+2025-04-12 09:43:05 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:43:05 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:43:05 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:43:05 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9618.HK
+2025-04-12 09:43:05 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_fundamentals.json
+2025-04-12 09:43:10 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:43:15 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:43:15 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-03-13_2025-04-12.csv
+2025-04-12 09:43:15 | ERROR    | src.ui.app:_plot_stock_data:506 - 绘制股票图表时出错: 'close'
+2025-04-12 09:45:21 | INFO     | __main__:run_daily_strategy:109 - 开始执行每日策略分析
+2025-04-12 09:45:21 | INFO     | src.data.data_loader:__init__:34 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache
+2025-04-12 09:45:21 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:45:21 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:45:21 | INFO     | __main__:run_daily_strategy:116 - 开始分析股票池
+2025-04-12 09:45:21 | INFO     | src.models.stock_analyzer:analyze_stock_pool:64 - 开始分析股票池，共8支股票
+2025-04-12 09:45:21 | INFO     | src.models.stock_analyzer:analyze_stock_pool:71 - 分析股票: 京东集团-SW
+2025-04-12 09:45:21 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9618.HK, 日期范围: 2025-01-11 至 2025-04-11
+2025-04-12 09:45:22 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9618.HK
+2025-04-12 09:45:23 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:45:23 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-01-11_2025-04-11.csv
+2025-04-12 09:45:23 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9618.HK
+2025-04-12 09:45:23 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_fundamentals.json
+2025-04-12 09:45:23 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: ufunc 'add' did not contain a loop with signature matching types (dtype('float64'), dtype('<U2')) -> None
+2025-04-12 09:45:23 | INFO     | src.models.stock_analyzer:analyze_stock_pool:93 - 股票京东集团-SW分析完成
+2025-04-12 09:45:23 | INFO     | src.models.stock_analyzer:analyze_stock_pool:71 - 分析股票: 网易-S
+2025-04-12 09:45:23 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9999.HK, 日期范围: 2025-01-11 至 2025-04-11
+2025-04-12 09:45:23 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9999.HK
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9999_HK_2025-01-11_2025-04-11.csv
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9999.HK
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9999_HK_fundamentals.json
+2025-04-12 09:45:24 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: ufunc 'add' did not contain a loop with signature matching types (dtype('float64'), dtype('<U2')) -> None
+2025-04-12 09:45:24 | INFO     | src.models.stock_analyzer:analyze_stock_pool:93 - 股票网易-S分析完成
+2025-04-12 09:45:24 | INFO     | src.models.stock_analyzer:analyze_stock_pool:71 - 分析股票: 阿里巴巴-SW
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9988.HK, 日期范围: 2025-01-11 至 2025-04-11
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9988.HK
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2025-01-11_2025-04-11.csv
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9988.HK
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_fundamentals.json
+2025-04-12 09:45:24 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: ufunc 'add' did not contain a loop with signature matching types (dtype('float64'), dtype('<U2')) -> None
+2025-04-12 09:45:24 | INFO     | src.models.stock_analyzer:analyze_stock_pool:93 - 股票阿里巴巴-SW分析完成
+2025-04-12 09:45:24 | INFO     | src.models.stock_analyzer:analyze_stock_pool:71 - 分析股票: 腾讯控股
+2025-04-12 09:45:24 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 0700.HK, 日期范围: 2025-01-11 至 2025-04-11
+2025-04-12 09:45:25 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 0700.HK
+2025-04-12 09:45:25 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:45:25 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/0700_HK_2025-01-11_2025-04-11.csv
+2025-04-12 09:45:25 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 0700.HK
+2025-04-12 09:45:25 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/0700_HK_fundamentals.json
+2025-04-12 09:45:25 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: ufunc 'add' did not contain a loop with signature matching types (dtype('float64'), dtype('<U2')) -> None
+2025-04-12 09:45:25 | INFO     | src.models.stock_analyzer:analyze_stock_pool:93 - 股票腾讯控股分析完成
+2025-04-12 09:45:25 | INFO     | src.models.stock_analyzer:analyze_stock_pool:71 - 分析股票: 哔哩哔哩-SW
+2025-04-12 09:45:25 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9626.HK, 日期范围: 2025-01-11 至 2025-04-11
+2025-04-12 09:45:26 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9626.HK
+2025-04-12 09:45:26 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:45:26 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9626_HK_2025-01-11_2025-04-11.csv
+2025-04-12 09:45:26 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9626.HK
+2025-04-12 09:45:26 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9626_HK_fundamentals.json
+2025-04-12 09:45:26 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: ufunc 'add' did not contain a loop with signature matching types (dtype('float64'), dtype('<U2')) -> None
+2025-04-12 09:45:26 | INFO     | src.models.stock_analyzer:analyze_stock_pool:93 - 股票哔哩哔哩-SW分析完成
+2025-04-12 09:45:26 | INFO     | src.models.stock_analyzer:analyze_stock_pool:71 - 分析股票: 快手-W
+2025-04-12 09:45:26 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 1024.HK, 日期范围: 2025-01-11 至 2025-04-11
+2025-04-12 09:45:27 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 1024.HK
+2025-04-12 09:45:27 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:45:27 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/1024_HK_2025-01-11_2025-04-11.csv
+2025-04-12 09:45:27 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 1024.HK
+2025-04-12 09:45:28 | WARNING  | src.data.data_loader:get_stock_fundamentals:439 - Yahoo Finance API调用失败: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/1024.HK?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true，使用模拟数据
+2025-04-12 09:45:28 | INFO     | src.data.data_loader:_create_mock_fundamentals:482 - 创建模拟基本面数据: 1024.HK
+2025-04-12 09:45:28 | ERROR    | src.data.data_loader:get_stock_fundamentals:456 - 获取财报数据失败: 1024.HK, 错误: 抱歉，您没有接口访问权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。
+2025-04-12 09:45:28 | INFO     | src.data.data_loader:get_stock_fundamentals:462 - 基本面数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/1024_HK_fundamentals.json
+2025-04-12 09:45:28 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: ufunc 'add' did not contain a loop with signature matching types (dtype('float64'), dtype('<U2')) -> None
+2025-04-12 09:45:28 | INFO     | src.models.stock_analyzer:analyze_stock_pool:93 - 股票快手-W分析完成
+2025-04-12 09:45:28 | INFO     | src.models.stock_analyzer:analyze_stock_pool:71 - 分析股票: 美团-W
+2025-04-12 09:45:28 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 3690.HK, 日期范围: 2025-01-11 至 2025-04-11
+2025-04-12 09:45:28 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 3690.HK
+2025-04-12 09:45:29 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:45:29 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/3690_HK_2025-01-11_2025-04-11.csv
+2025-04-12 09:45:29 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 3690.HK
+2025-04-12 09:45:29 | WARNING  | src.data.data_loader:get_stock_fundamentals:439 - Yahoo Finance API调用失败: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/3690.HK?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true，使用模拟数据
+2025-04-12 09:45:29 | INFO     | src.data.data_loader:_create_mock_fundamentals:482 - 创建模拟基本面数据: 3690.HK
+2025-04-12 09:45:29 | ERROR    | src.data.data_loader:get_stock_fundamentals:456 - 获取财报数据失败: 3690.HK, 错误: 抱歉，您没有接口访问权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。
+2025-04-12 09:45:29 | INFO     | src.data.data_loader:get_stock_fundamentals:462 - 基本面数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/3690_HK_fundamentals.json
+2025-04-12 09:45:29 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: ufunc 'add' did not contain a loop with signature matching types (dtype('float64'), dtype('<U2')) -> None
+2025-04-12 09:45:29 | INFO     | src.models.stock_analyzer:analyze_stock_pool:93 - 股票美团-W分析完成
+2025-04-12 09:45:29 | INFO     | src.models.stock_analyzer:analyze_stock_pool:71 - 分析股票: 百度集团-SW
+2025-04-12 09:45:29 | INFO     | src.data.data_loader:get_stock_data:62 - 从API获取股票数据: 9888.HK, 日期范围: 2025-01-11 至 2025-04-11
+2025-04-12 09:45:29 | INFO     | src.data.data_loader:get_stock_data:71 - yfinance无数据，尝试使用akshare获取: 9888.HK
+2025-04-12 09:45:30 | INFO     | src.data.data_loader:get_stock_data:86 - akshare原始数据列: ['date', 'open', 'high', 'low', 'close', 'volume']
+2025-04-12 09:45:30 | INFO     | src.data.data_loader:get_stock_data:175 - 数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9888_HK_2025-01-11_2025-04-11.csv
+2025-04-12 09:45:30 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9888.HK
+2025-04-12 09:45:30 | WARNING  | src.data.data_loader:get_stock_fundamentals:439 - Yahoo Finance API调用失败: 429 Client Error: Too Many Requests for url: https://query2.finance.yahoo.com/v6/finance/quoteSummary/9888.HK?modules=financialData&modules=quoteType&modules=defaultKeyStatistics&modules=assetProfile&modules=summaryDetail&ssl=true，使用模拟数据
+2025-04-12 09:45:30 | INFO     | src.data.data_loader:_create_mock_fundamentals:482 - 创建模拟基本面数据: 9888.HK
+2025-04-12 09:45:30 | ERROR    | src.data.data_loader:get_stock_fundamentals:456 - 获取财报数据失败: 9888.HK, 错误: 抱歉，您没有接口访问权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。
+2025-04-12 09:45:30 | INFO     | src.data.data_loader:get_stock_fundamentals:462 - 基本面数据已保存到缓存: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9888_HK_fundamentals.json
+2025-04-12 09:45:30 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: ufunc 'add' did not contain a loop with signature matching types (dtype('float64'), dtype('<U2')) -> None
+2025-04-12 09:45:30 | INFO     | src.models.stock_analyzer:analyze_stock_pool:93 - 股票百度集团-SW分析完成
+2025-04-12 09:45:30 | INFO     | src.models.stock_analyzer:analyze_stock_pool:97 - 股票池分析完成，成功分析8/8支股票
+2025-04-12 09:45:30 | INFO     | src.models.stock_analyzer:rank_stocks:109 - 开始对股票进行排名
+2025-04-12 09:45:35 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:45:41 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:45:46 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:45:51 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:45:56 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:46:01 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:46:06 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:46:11 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:46:11 | INFO     | src.models.stock_analyzer:rank_stocks:148 - 股票排名完成，共8支股票
+2025-04-12 09:46:11 | INFO     | __main__:run_daily_strategy:123 - 今日股票推荐排名:
+2025-04-12 09:46:11 | INFO     | __main__:run_daily_strategy:125 - 9618.HK: 持有, 评分: 0
+2025-04-12 09:46:11 | INFO     | __main__:run_daily_strategy:125 - 9999.HK: 持有, 评分: 0
+2025-04-12 09:46:11 | INFO     | __main__:run_daily_strategy:125 - 9988.HK: 持有, 评分: 0
+2025-04-12 09:46:11 | INFO     | __main__:run_daily_strategy:125 - 0700.HK: 持有, 评分: 0
+2025-04-12 09:46:11 | INFO     | __main__:run_daily_strategy:125 - 9626.HK: 持有, 评分: 0
+2025-04-12 09:46:11 | INFO     | __main__:run_daily_strategy:129 - 每日策略分析完成
+2025-04-12 09:46:56 | INFO     | src.utils.logger:<module>:49 - 日志系统初始化完成，日志级别: INFO，日志目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/logs
+2025-04-12 09:46:58 | INFO     | src.data.data_loader:__init__:40 - 数据加载器初始化完成，缓存目录: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache，超时设置: 30秒
+2025-04-12 09:46:59 | INFO     | src.models.stock_analyzer:__init__:40 - DeepSeek客户端初始化成功，使用模拟模式
+2025-04-12 09:46:59 | INFO     | src.models.stock_analyzer:__init__:47 - DeepSeek API连接测试成功，已切换到API模式
+2025-04-12 09:46:59 | INFO     | src.backtest.backtester:__init__:31 - 回测引擎初始化完成，初始资金: 1000000.00
+2025-04-12 09:46:59 | INFO     | __main__:start_api_server:297 - 启动API服务器: 0.0.0.0:8888
+2025-04-12 09:47:01 | INFO     | src.api.api_server:run_backtest:172 - 收到回测请求: {'stock_code': '9988.HK', 'strategy_name': 'macd', 'start_date': '2023-01-01', 'end_date': '2024-03-14', 'initial_capital': 1000000, 'fast_period': 12, 'slow_period': 26, 'signal_period': 9, 'num_std': 2, 'overbought': 70, 'oversold': 30}
+2025-04-12 09:47:01 | INFO     | src.strategies.trading_strategy:__init__:20 - 初始化策略: MACD策略
+2025-04-12 09:47:01 | INFO     | src.backtest.backtester:run_backtest:55 - 开始回测: 股票=9988.HK, 策略=MACD策略, 日期范围: 2023-01-01 至 2024-03-14
+2025-04-12 09:47:01 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9988_HK_2023-01-01_2024-03-14.csv
+2025-04-12 09:47:01 | INFO     | src.backtest.backtester:run_backtest:86 - 回测完成: 9988.HK, 总回报率: 9.35%
+2025-04-12 09:49:11 | INFO     | src.ui.app:analyze_stock:210 - UI请求: 分析股票 9618.HK (京东集团-SW), 天数: 30
+2025-04-12 09:49:11 | INFO     | src.ui.app:analyze_stock:214 - 提取纯股票代码: 9618.HK
+2025-04-12 09:49:11 | INFO     | src.models.stock_analyzer:analyze_stock:252 - 开始分析股票: 京东集团-SW, 天数: 30
+2025-04-12 09:49:11 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-03-13_2025-04-12.csv
+2025-04-12 09:49:11 | INFO     | src.data.data_loader:get_index_data:236 - 从API获取指数数据: HST50.HK, 日期范围: 2025-03-13 至 2025-04-12
+2025-04-12 09:49:11 | INFO     | src.data.data_loader:get_index_data:245 - 尝试使用akshare获取指数数据: HST50.HK
+2025-04-12 09:49:11 | INFO     | src.data.data_loader:_create_mock_index_data:592 - 创建模拟指数数据: HST50.HK
+2025-04-12 09:49:11 | INFO     | src.data.data_loader:_create_mock_index_data:632 - 模拟数据创建完成，日期范围: 2025-03-13 00:00:00 至 2025-04-11 00:00:00, 数据量: 22
+2025-04-12 09:49:12 | INFO     | src.data.data_loader:get_index_data:266 - 成功获取指数数据，使用stock_zh_index_hist_csindex方法
+2025-04-12 09:49:12 | INFO     | src.data.data_loader:get_index_data:296 - akshare原始指数数据列: ['日期', '指数代码', '指数中文全称', '指数中文简称', '指数英文全称', '指数英文简称', '开盘', '最高', '最低', '收盘', '涨跌', '涨跌幅', '成交量', '成交金额', '样本数量']
+2025-04-12 09:49:12 | WARNING  | src.data.data_loader:get_index_data:378 - 未找到指数数据: HST50.HK
+2025-04-12 09:49:12 | INFO     | src.data.data_loader:get_stock_fundamentals:396 - 获取股票基本面数据: 9618.HK
+2025-04-12 09:49:12 | INFO     | src.data.data_loader:get_stock_fundamentals:404 - 从缓存加载基本面数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_fundamentals.json
+2025-04-12 09:49:17 | ERROR    | src.utils.deepseek_client:analyze_stock:89 - 生成分析时出错: The read operation timed out
+2025-04-12 09:49:22 | ERROR    | src.utils.deepseek_client:generate_trading_signal:134 - 生成交易信号时出错: The read operation timed out
+2025-04-12 09:49:22 | INFO     | src.data.data_loader:get_stock_data:58 - 从缓存加载数据: /Users/gaodeying/Desktop/AI股票/ai_quant_sys/data/cache/9618_HK_2025-03-13_2025-04-12.csv
+2025-04-12 09:49:22 | ERROR    | src.ui.app:_plot_stock_data:506 - 绘制股票图表时出错: 'close'
