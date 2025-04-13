@@ -21,12 +21,28 @@ class DeepSeekClient:
         self.api_key = os.getenv("DEEPSEEK_API_KEY")
         self.mock_mode = mock_mode
         self.base_url = "https://api.deepseek.com/v1"
+        self.timeout = 120.0  # 设置超时时间为120秒
+        self.max_retries = 3  # 最大重试次数
         
-        # 初始化 HTTP 客户端
+        # 初始化 HTTP 客户端，设置较长的超时时间
         self.client = httpx.Client(
             base_url=self.base_url,
-            headers={"Authorization": f"Bearer {self.api_key}"}
+            headers={"Authorization": f"Bearer {self.api_key}"},
+            timeout=self.timeout
         )
+        
+        # 如果不是模拟模式，测试连接
+        if not mock_mode:
+            try:
+                test_result = self.test_connection()
+                if test_result["status"] == "success":
+                    logger.info("DeepSeek API连接测试成功，已切换到API模式")
+                else:
+                    logger.warning(f"DeepSeek API连接测试失败: {test_result['message']}，将使用模拟模式")
+                    self.mock_mode = True
+            except Exception as e:
+                logger.error(f"DeepSeek API初始化错误: {str(e)}，将使用模拟模式")
+                self.mock_mode = True
     
     def test_connection(self) -> Dict[str, str]:
         """测试API连接
@@ -62,32 +78,62 @@ class DeepSeekClient:
         if self.mock_mode:
             return self._mock_analysis(stock_code, stock_data)
             
-        try:
-            # 准备分析请求
-            prompt = self._prepare_analysis_prompt(stock_code, stock_data)
-            
-            # 发送API请求
-            response = self.client.post(
-                "/chat/completions",
-                json={
-                    "model": "deepseek-chat",
-                    "messages": [
-                        {"role": "system", "content": "你是一个专业的股票分析师，请基于提供的数据进行分析。"},
-                        {"role": "user", "content": prompt}
-                    ]
-                }
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
-                return result["choices"][0]["message"]["content"]
-            else:
-                logger.error(f"API请求失败: {response.status_code}")
-                return f"分析失败: API返回错误 {response.status_code}"
+        # 重试机制
+        for attempt in range(self.max_retries):
+            try:
+                # 准备分析请求
+                prompt = self._prepare_analysis_prompt(stock_code, stock_data)
                 
-        except Exception as e:
-            logger.error(f"生成分析时出错: {str(e)}")
-            return f"分析失败: {str(e)}"
+                logger.info(f"DeepSeek API请求分析 (尝试 {attempt+1}/{self.max_retries})")
+                
+                # 发送API请求
+                response = self.client.post(
+                    "/chat/completions",
+                    json={
+                        "model": "deepseek-chat",
+                        "messages": [
+                            {"role": "system", "content": "你是一个专业的股票分析师，请基于提供的数据进行分析。"},
+                            {"role": "user", "content": prompt}
+                        ]
+                    },
+                    timeout=self.timeout  # 明确指定超时时间
+                )
+                
+                if response.status_code == 200:
+                    result = response.json()
+                    return result["choices"][0]["message"]["content"]
+                else:
+                    logger.error(f"API请求失败: {response.status_code}")
+                    # 如果是最后一次尝试，则返回错误信息
+                    if attempt == self.max_retries - 1:
+                        return f"分析失败: API返回错误 {response.status_code}"
+                    # 否则等待后重试
+                    import time
+                    time.sleep(2)  # 等待2秒后重试
+                    continue
+                    
+            except httpx.TimeoutException as e:
+                logger.error(f"API请求超时 (尝试 {attempt+1}/{self.max_retries}): {str(e)}")
+                # 如果是最后一次尝试，则返回错误信息
+                if attempt == self.max_retries - 1:
+                    return f"分析失败: API请求超时，请稍后重试"
+                # 否则等待后重试
+                import time
+                time.sleep(2)  # 等待2秒后重试
+                continue
+            except Exception as e:
+                logger.error(f"生成分析时出错 (尝试 {attempt+1}/{self.max_retries}): {str(e)}")
+                # 如果是最后一次尝试，则返回错误信息
+                if attempt == self.max_retries - 1:
+                    return f"分析失败: {str(e)}"
+                # 否则等待后重试
+                import time
+                time.sleep(2)  # 等待2秒后重试
+                continue
+        
+        # 如果所有尝试都失败，则返回模拟分析结果
+        logger.warning(f"所有API请求尝试都失败，切换到模拟模式")
+        return self._mock_analysis(stock_code, stock_data)
     
     def generate_trading_signal(
         self, 
@@ -106,33 +152,63 @@ class DeepSeekClient:
         if self.mock_mode:
             return self._mock_trading_signal(stock_code)
             
-        try:
-            # 准备信号生成请求
-            prompt = self._prepare_signal_prompt(stock_code, analysis_data)
-            
-            # 发送API请求
-            response = self.client.post(
-                "/chat/completions",
-                json={
-                    "model": "deepseek-chat",
-                    "messages": [
-                        {"role": "system", "content": "你是一个专业的交易策略师，请基于分析数据生成交易信号。"},
-                        {"role": "user", "content": prompt}
-                    ]
-                }
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
-                # 解析AI响应为交易信号
-                return self._parse_signal_response(result["choices"][0]["message"]["content"])
-            else:
-                logger.error(f"API请求失败: {response.status_code}")
-                return self._generate_error_signal(stock_code, f"API返回错误 {response.status_code}")
+        # 重试机制
+        for attempt in range(self.max_retries):
+            try:
+                # 准备信号生成请求
+                prompt = self._prepare_signal_prompt(stock_code, analysis_data)
                 
-        except Exception as e:
-            logger.error(f"生成交易信号时出错: {str(e)}")
-            return self._generate_error_signal(stock_code, str(e))
+                logger.info(f"DeepSeek API请求交易信号 (尝试 {attempt+1}/{self.max_retries})")
+                
+                # 发送API请求
+                response = self.client.post(
+                    "/chat/completions",
+                    json={
+                        "model": "deepseek-chat",
+                        "messages": [
+                            {"role": "system", "content": "你是一个专业的交易策略师，请基于分析数据生成交易信号。"},
+                            {"role": "user", "content": prompt}
+                        ]
+                    },
+                    timeout=self.timeout  # 明确指定超时时间
+                )
+                
+                if response.status_code == 200:
+                    result = response.json()
+                    # 解析AI响应为交易信号
+                    return self._parse_signal_response(result["choices"][0]["message"]["content"])
+                else:
+                    logger.error(f"API请求失败: {response.status_code}")
+                    # 如果是最后一次尝试，则返回错误信号
+                    if attempt == self.max_retries - 1:
+                        return self._generate_error_signal(stock_code, f"API返回错误 {response.status_code}")
+                    # 否则等待后重试
+                    import time
+                    time.sleep(2)  # 等待2秒后重试
+                    continue
+                    
+            except httpx.TimeoutException as e:
+                logger.error(f"API请求超时 (尝试 {attempt+1}/{self.max_retries}): {str(e)}")
+                # 如果是最后一次尝试，则返回错误信号
+                if attempt == self.max_retries - 1:
+                    return self._generate_error_signal(stock_code, "API请求超时，请稍后重试")
+                # 否则等待后重试
+                import time
+                time.sleep(2)  # 等待2秒后重试
+                continue
+            except Exception as e:
+                logger.error(f"生成交易信号时出错 (尝试 {attempt+1}/{self.max_retries}): {str(e)}")
+                # 如果是最后一次尝试，则返回错误信号
+                if attempt == self.max_retries - 1:
+                    return self._generate_error_signal(stock_code, str(e))
+                # 否则等待后重试
+                import time
+                time.sleep(2)  # 等待2秒后重试
+                continue
+        
+        # 如果所有尝试都失败，则返回模拟交易信号
+        logger.warning(f"所有API请求尝试都失败，切换到模拟模式")
+        return self._mock_trading_signal(stock_code)
     
     def _prepare_analysis_prompt(self, stock_code: str, stock_data: Dict[str, Any]) -> str:
         """准备分析提示词

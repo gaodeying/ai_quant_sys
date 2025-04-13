@@ -78,12 +78,8 @@ class DataLoader:
                 logger.info(f"尝试使用yfinance获取数据 (尝试 {attempt+1}/{self.max_retries})")
                 ticker = yf.Ticker(stock_code)
                 
-                # 设置超时参数
-                session = requests.Session()
-                session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
-                
-                # 使用会话获取数据，设置超时
-                df = ticker.history(start=start_date, end=end_date, timeout=self.request_timeout, session=session)
+                # 直接调用history，不传入session和timeout参数
+                df = ticker.history(start=start_date, end=end_date)
                 
                 if df.empty:
                     # 如果yfinance没有数据，尝试使用akshare
@@ -95,12 +91,8 @@ class DataLoader:
                             ak_code = ak_code.zfill(5)
                         
                         try:
-                            # 尝试获取港股数据，使用try/except捕获超时异常
-                            with requests.Session() as session:
-                                session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
-                                
-                                # 设置akshare的超时
-                                df = ak.stock_hk_daily(symbol=ak_code, adjust="qfq")
+                            # 尝试获取港股数据
+                            df = ak.stock_hk_daily(symbol=ak_code, adjust="qfq")
                             
                             if df.empty:
                                 logger.warning(f"akshare返回空数据: {stock_code}")
@@ -315,12 +307,8 @@ class DataLoader:
                 logger.info(f"尝试使用yfinance获取指数数据 (尝试 {attempt+1}/{self.max_retries})")
                 ticker = yf.Ticker(index_code)
                 
-                # 设置超时参数
-                session = requests.Session()
-                session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
-                
-                # 使用会话获取数据，设置超时
-                df = ticker.history(start=start_date, end=end_date, timeout=self.request_timeout, session=session)
+                # 直接调用history，不传入session和timeout参数
+                df = ticker.history(start=start_date, end=end_date)
                 
                 if df.empty and '.HK' in index_code:
                     # 尝试使用akshare获取恒生指数数据
@@ -343,10 +331,8 @@ class DataLoader:
                     # 尝试使用akshare获取数据
                     if ak_index_code:
                         try:
-                            # 使用正确的akshare方法获取指数数据，添加超时处理
-                            with requests.Session() as session:
-                                session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
-                                df = ak.stock_zh_index_hist_csindex(symbol=ak_index_code)
+                            # 使用正确的akshare方法获取指数数据
+                            df = ak.stock_zh_index_hist_csindex(symbol=ak_index_code)
                             logger.info(f"成功获取指数数据，使用stock_zh_index_hist_csindex方法")
                         except (RequestException, Timeout) as e:
                             logger.error(f"请求超时或连接错误: {str(e)}")
@@ -364,9 +350,7 @@ class DataLoader:
                             
                             # 尝试备用方法
                             try:
-                                with requests.Session() as session:
-                                    session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
-                                    df = ak.stock_zh_index_daily(symbol=ak_index_code)
+                                df = ak.stock_zh_index_daily(symbol=ak_index_code)
                                 logger.info(f"成功获取指数数据，使用stock_zh_index_daily方法")
                             except (RequestException, Timeout) as e:
                                 logger.error(f"请求超时或连接错误: {str(e)}")
@@ -378,16 +362,14 @@ class DataLoader:
                                         return pd.DataFrame()
                                 else:
                                     time.sleep(self.retry_delay)
-                                continue
+                                    continue
                             except Exception as e:
                                 logger.error(f"使用stock_zh_index_daily获取指数数据失败: {str(e)}")
                                 
                                 # 最后尝试
                                 try:
-                                    with requests.Session() as session:
-                                        session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
-                                        df = ak.index_zh_a_hist(symbol=ak_index_code, period="daily", 
-                                                           start_date=start_date, end_date=end_date)
+                                    df = ak.index_zh_a_hist(symbol=ak_index_code, period="daily", 
+                                                       start_date=start_date, end_date=end_date)
                                     logger.info(f"成功获取指数数据，使用index_zh_a_hist方法")
                                 except (RequestException, Timeout) as e:
                                     logger.error(f"请求超时或连接错误: {str(e)}")
@@ -573,10 +555,7 @@ class DataLoader:
                 # 使用yfinance获取基本数据
                 logger.info(f"尝试使用yfinance获取基本面数据 (尝试 {attempt+1}/{self.max_retries})")
                 try:
-                    # 设置超时参数
-                    session = requests.Session()
-                    session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
-                    
+                    # 直接使用yfinance，不设置session参数
                     ticker = yf.Ticker(stock_code)
                     info = ticker.info
                     
@@ -618,10 +597,8 @@ class DataLoader:
                         if len(ts_code) < 5:
                             ts_code = ts_code.zfill(5)
                         
-                        # 使用tushare获取港股基本面数据
-                        with requests.Session() as session:
-                            session.request = lambda **kwargs: requests.Request(**kwargs).prepare()
-                            df = pro.hk_basic(ts_code=ts_code, fields='pe,pb,dividend_yield,total_mv')
+                        # 直接使用tushare获取数据，不设置session
+                        df = pro.hk_basic(ts_code=ts_code, fields='pe,pb,dividend_yield,total_mv')
                         
                         if not df.empty:
                             result["pe_ratio"] = df.iloc[0]['pe'] if 'pe' in df.columns else None

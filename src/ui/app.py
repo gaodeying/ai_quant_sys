@@ -209,6 +209,17 @@ class GradioApp:
         try:
             logger.info(f"UI请求: 分析股票 {stock_code}, 天数: {days}")
             
+            # 检查股票代码是否有效
+            if not stock_code or stock_code == [] or stock_code == "[]":
+                return "请选择有效的股票代码", pd.DataFrame(), plt.Figure()
+            
+            # 确保stock_code是字符串
+            if isinstance(stock_code, list):
+                if len(stock_code) > 0:
+                    stock_code = str(stock_code[0])
+                else:
+                    return "请选择有效的股票代码", pd.DataFrame(), plt.Figure()
+            
             # 从选择的文本中提取纯股票代码（从"9618.HK (京东集团-SW)"提取"9618.HK"）
             pure_stock_code = stock_code.split(" ")[0] if " " in stock_code else stock_code
             logger.info(f"提取纯股票代码: {pure_stock_code}")
@@ -266,6 +277,17 @@ class GradioApp:
         """
         try:
             logger.info(f"UI请求: 回测 {stock_code}, 策略: {strategy_name}, 日期范围: {start_date} 至 {end_date}")
+            
+            # 检查股票代码是否有效
+            if not stock_code or stock_code == [] or stock_code == "[]":
+                return {"error": "请选择有效的股票代码"}, plt.Figure(), plt.Figure()
+            
+            # 确保stock_code是字符串
+            if isinstance(stock_code, list):
+                if len(stock_code) > 0:
+                    stock_code = str(stock_code[0])
+                else:
+                    return {"error": "请选择有效的股票代码"}, plt.Figure(), plt.Figure()
             
             # 从选择的文本中提取纯股票代码
             pure_stock_code = stock_code.split(" ")[0] if " " in stock_code else stock_code
@@ -332,6 +354,17 @@ class GradioApp:
         """
         try:
             logger.info(f"UI请求: 策略比较, 股票: {stock_code}, 日期范围: {start_date} 至 {end_date}")
+            
+            # 检查股票代码是否有效
+            if not stock_code or stock_code == [] or stock_code == "[]":
+                return "请选择有效的股票代码", plt.Figure(), plt.Figure()
+            
+            # 确保stock_code是字符串
+            if isinstance(stock_code, list):
+                if len(stock_code) > 0:
+                    stock_code = str(stock_code[0])
+                else:
+                    return "请选择有效的股票代码", plt.Figure(), plt.Figure()
             
             # 从选择的文本中提取纯股票代码
             pure_stock_code = stock_code.split(" ")[0] if " " in stock_code else stock_code
@@ -484,9 +517,17 @@ class GradioApp:
                 plt.title(f"无法获取股票数据: {stock_code}", fontsize=14, pad=20)
                 return plt.gcf()
             
+            # 确保列名标准化
+            if 'close' in stock_data.columns:
+                column_close = 'close'
+                column_volume = 'volume'
+            else:
+                column_close = 'Close'
+                column_volume = 'Volume'
+            
             # 绘制股价
             ax1 = plt.subplot(2, 1, 1)
-            ax1.plot(stock_data.index, stock_data['close'], label='收盘价', linewidth=2)
+            ax1.plot(stock_data.index, stock_data[column_close], label='收盘价', linewidth=2)
             ax1.set_title(f"{stock_code} 股价走势 ({start_date} 至 {end_date})", fontsize=16, pad=20)
             ax1.set_ylabel('价格', fontsize=12)
             ax1.grid(True)
@@ -494,7 +535,7 @@ class GradioApp:
             
             # 绘制成交量
             ax2 = plt.subplot(2, 1, 2, sharex=ax1)
-            ax2.bar(stock_data.index, stock_data['volume'], label='成交量', alpha=0.7)
+            ax2.bar(stock_data.index, stock_data[column_volume], label='成交量', alpha=0.7)
             ax2.set_ylabel('成交量', fontsize=12)
             ax2.set_xlabel('日期', fontsize=12)
             ax2.grid(True)
